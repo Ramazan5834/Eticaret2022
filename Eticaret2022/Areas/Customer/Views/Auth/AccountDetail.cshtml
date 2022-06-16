@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewBag.Title = "Hesap Detay";
+}
+@model Eticaret2022.Models.ApplicationUser
+<!-- ::::::  Start  Main Container Section  ::::::  -->
+<main id="main-container" class="main-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- :::::::::: Start My Account Section :::::::::: -->
+                <div class="my-account-area">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-3">
+                            <div class="my-account-menu">
+                                <ul class="nav account-menu-list flex-column nav-pills" id="pills-tab" role="tablist">
+                                    <li>
+                                        <a id="pills-address-tab" class="link--icon-left" href="/siparislerim"
+                                           aria-controls="pills-address" aria-selected="false">
+                                            <i class="far fa-shopping-basket"></i>Siparişlerim
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="pills-address-tab" class="link--icon-left" href="/adres-listesi"
+                                           aria-controls="pills-address" aria-selected="false">
+                                            <i class="fas fa-map-marked-alt"></i>Adreslerim
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="pills-account-tab" class="active link--icon-left" href="/hesabim"
+                                           aria-controls="pills-account" aria-selected="false">
+                                            <i class="fas fa-user"></i>
+                                            Hesap Detaylarım
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="link--icon-left" href="/Account/LogOff"><i class="fas fa-sign-out-alt"></i>Çıkış Yap</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-md-9">
+                            <div class="tab-content my-account-tab" id="pills-tabContent">
+                                <div aria-labelledby="pills-account-tab">
+                                    <div class="my-account-details account-wrapper">
+                                        <h4 class="account-title">Hesabımı Düzenle</h4>
+                                        <div class="account-details">
+                                            <div class="row">
+                                                @if (TempData["message"] != null)
+                                                {
+
+                                                    if ((string)TempData["message"] == "İşleminiz başarı ile gerçekleşti.")
+                                                    {
+                                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                            @TempData["message"]
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                            @TempData["message"]
+                                                        </div>
+                                                    }
+
+
+                                                }
+                                                <form action="/Customer/Auth/UpdateAccount" method="post">
+                                                    @Html.AntiForgeryToken()
+                                                    <div class="account-details">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-box__single-group">
+                                                                    @Html.LabelFor(I => I.Email, "Email", new { @style = "margin-bottom: 0" })
+                                                                    @Html.TextBoxFor(m => m.Email)
+                                                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-box__single-group">
+                                                                    @Html.LabelFor(I => I.PhoneNumber, "Telefon Numarası", new { @style = "margin-bottom: 0" })
+                                                                    @Html.TextBoxFor(m => m.PhoneNumber)
+                                                                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-box__single-group">
+                                                                    @Html.LabelFor(I => I.Name, "Ad", new { @style = "margin-bottom: 0" })
+                                                                    @Html.TextBoxFor(m => m.Name)
+                                                                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-box__single-group">
+                                                                    @Html.LabelFor(I => I.Surname, "Soyad", new { @style = "margin-bottom: 0" })
+                                                                    @Html.TextBoxFor(m => m.Surname)
+                                                                    @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+                                                            @Html.HiddenFor(I => I.Id)
+                                                            @Html.HiddenFor(I => I.EmailConfirmed)
+                                                            @Html.HiddenFor(I => I.PasswordHash)
+                                                            @Html.HiddenFor(I => I.SecurityStamp)
+                                                            @Html.HiddenFor(I => I.PhoneNumberConfirmed)
+                                                            @Html.HiddenFor(I => I.TwoFactorEnabled)
+                                                            @Html.HiddenFor(I => I.LockoutEndDateUtc)
+                                                            @Html.HiddenFor(I => I.LockoutEnabled)
+                                                            @Html.HiddenFor(I => I.AccessFailedCount)
+                                                            @Html.HiddenFor(I => I.UserName)
+                                                            <div class="col-md-6">
+                                                                <div class="form-box__single-group">
+                                                                    <button type="submit" class="btn btn--box btn--radius btn--small btn--black btn--black-hover-green btn--uppercase font--bold">Değişiklikleri Kaydet</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-box__single-group">
+                                                                    <a href="/sifre-degistir" class="box-btn m-t-15"><i class="fas fa-exchange"></i> Şifre Değiştir</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- :::::::::: End My Account Section :::::::::: -->
+            </div>
+        </div>
+    </div>
+</main> <!-- ::::::  End  Main Container Section  ::::::  -->
+@section Scripts
+{
+    <script src="/Content/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="/Content/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

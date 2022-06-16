@@ -1,0 +1,46 @@
+﻿@model List<Eticaret2022.DataEntities.DataModels.BankaBilgi>
+@{ ViewBag.Title = "Banka Bilgileri"; }
+
+<!-- ::::::  Start  Main Container Section  ::::::  -->
+<main id="main-container" class="main-container">
+    <div class="container col-8">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-content m-b-60 text-center">
+                    <h5 class="section-content__title">Banka Bilgilerimiz</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="faq-section ">
+                    <div class="faq-top m-b-40">
+                        <p class="faq__title font--bold m-b-15">Iban İle Ödeme seçeneğini seçtiğinizde aşağıdaki iban bilgilerini kullanarak kolay ve güvenilir bir şekilde ödeme yapabilirsiniz.</p>
+                    </div>
+                    <div class="faq__accordion accordian" id="faq__accordion">
+                        @foreach (var bankaBilgi in Model)
+                        {
+            <div class="accordian-item">
+                <div class="accordian-item-header">
+                    <h4>@bankaBilgi.Adi</h4>
+                </div>
+
+                <div class="accordian-item-body">
+                    <div class="accordian-item-body-content">
+                        <img src="@bankaBilgi.ResimPath" width="200" height="200" />
+                        <br />
+                        <br />
+                        <p>
+                            @bankaBilgi.Iban
+                        </p>
+                    </div>
+                </div>
+            </div>}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main> <!-- ::::::  End  Main Container Section  ::::::  -->

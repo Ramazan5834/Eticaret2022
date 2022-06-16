@@ -1,0 +1,147 @@
+﻿@model Eticaret2022.BussinessLayer.Basket.Basket
+
+<div id="offcanvas-add-cart__box" class="offcanvas offcanvas-cart offcanvas-add-cart">
+    <div class="offcanvas__top">
+        <span class="offcanvas__top-text"><i class="icon-shopping-cart"></i>Sepetim</span>
+        <button class="offcanvas-close"><i class="fal fa-times"></i></button>
+    </div>
+    <!-- Start Add Cart Item Box-->
+    <ul class="offcanvas-add-cart__menu">
+        @if (Model.BasketLines.Count > 0)
+        {<!-- Start Single Add Cart Item--> foreach (var item in Model.BasketLines)
+            {
+<li class="offcanvas-add-cart__list pos-relative d-flex align-items-center justify-content-between ">
+    <div class="offcanvas-add-cart__content d-flex align-items-start m-r-10">
+        <div class="offcanvas-add-cart__img-box pos-relative">
+            <a href="/urundetay?productId=@item.Urun.Id" class="offcanvas-add-cart__img-link img-responsive"><img style="height: 100px" src="@item.Urun.ResimPath" alt="" class="add-cart__img"></a>
+        </div>
+        <div class="oSffcanvas-add-cart__detail">
+            <a href="product-single-default.html" class="offcanvas-add-cart__link">@item.Urun.Adi</a>
+            <span class="offcanvas-add-cart__price">@item.Urun.Fiyat TL</span><br />
+            <span class="offcanvas-add-cart__info">
+                Kategori :<a href="/kategori-detay?categoryId=@item.Urun.AltKategoriId">
+                    @{ var CategoryInfo = Eticaret2022.App_Classes.ContextDB.Connect.AltKategoriDal.GetById(item.Urun.AltKategoriId); }
+                    @CategoryInfo.Adi
+                </a>
+                <br />
+                Adet : @item.Adet
+            </span>
+        </div>
+    </div>
+    <button class="offcanvas-add-cart__item-dismiss" onclick="urunsil(@item.Urun.Id)"><i class="fal fa-times"></i></button>
+</li>
+ } <!-- Start Single Add Cart Item--> }
+else
+{
+<span>
+    Sepette Ürün Bulunmamaktadır. <a href="/" style=" color: #3fba64
+">Buradan</a> Alışverişe Devam Edebilirsiniz.
+</span>
+}
+
+    </ul> <!-- Start Add Cart Item Box-->
+    <!-- Start Add Cart Checkout Box-->
+    <div class="offcanvas-add-cart__checkout-box-bottom">
+        <!-- Start offcanvas Add Cart Checkout Info-->
+        <ul class="offcanvas-add-cart__checkout-info">
+            <!-- Start Single Add Cart Checkout Info-->
+            <li class="offcanvas-add-cart__checkout-list">
+                <span class="offcanvas-add-cart__checkout-left-info">Toplam Tutar</span>
+                <span class="offcanvas-add-cart__checkout-right-info">@Model.TotalPrice().ToString("c") TL</span>
+            </li> <!-- End Single Add Cart Checkout Info-->
+            <!-- Start Single Add Cart Checkout Info-->
+            <li class="offcanvas-add-cart__checkout-list">
+                <span class="offcanvas-add-cart__checkout-left-info">Toplam Ürün Sayısı</span>
+                <span class="offcanvas-add-cart__checkout-right-info">@Model.BasketLines.Sum(ss => ss.Adet).ToString()</span>
+            </li> <!-- End Single Add Cart Checkout Info-->
+
+            @if (Model.BasketLines.Count > 0)
+            {
+                <br />
+                                <li class="offcanvas-add-cart__checkout-list">
+                                    <span class="offcanvas-add-cart__checkout-left-info">
+                                        <u><a style="color: darkslateblue" onclick="sepetBosalt()">Sepeti Boşalt <i class="far fa-trash-alt"></i></a></u>
+                                    </span>
+                                </li>
+}
+        </ul> <!-- End offcanvas Add Cart Checkout Info-->
+
+        <div class="offcanvas-add-cart__btn-checkout">
+            <a href="/sepetim" class="btn btn--block btn--radius btn--box btn--black btn--black-hover-green btn--large btn--uppercase font--bold">Sepete Git</a>
+
+
+        </div>
+
+    </div> <!-- End Add Cart Checkout Box-->
+</div> <!-- End Popup Add Cart -->
+<script>
+    function ShowMessage(message, type) {
+        if (type == "s") {
+            swal({
+                title: 'İşlem Başarılı',
+                text: message,
+                type: 'success',
+                showCancelButtonClass: 'btn-success',
+                confirmButtonText: 'Tamam'
+            });
+        }
+        else {
+            swal({
+                title: 'İşlem Başarısız',
+                text: message,
+                type: 'error',
+                showCancelButtonClass: 'btn-danger',
+                confirmButtonText: 'Tamam'
+            });
+        }
+    }
+
+
+    function urunsil(Id) {
+        swal({
+            title: 'Silme İşlemi',
+            text: 'Seçtiğiniz ürünü sepetten çıkarmak istediğinizden emin misiniz? ',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn-danger',
+            confirmButtonText: 'Evet',
+            cancelButtonText: 'Hayır',
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        method: "Post",
+                        url: "/Customer/Basket/RemoveProduct",
+                        data: { Id: Id },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.rtnValue == true) {
+                                window.location.reload();
+                                setTimeout(function () {
+                                    ShowMessage("Ürün Başarılı Bir Şekilde Sepetten Silindi !", "s");
+                                }, 3000);
+                            }
+                        }
+                    });
+                }
+                else {
+                    swal({ title: 'Kapatıldı', text: 'ürünü sepetten çıkarmaktan vazgeçtiniz.', type: 'error', confirmButtonText: 'Tamam' });
+                }
+            }
+        );
+
+
+    }
+
+
+    function sepetBosalt() {
+        $.ajax({
+            method: "Post",
+            url: "/Customer/Basket/ClearBasket",
+            success: function (data) {
+                window.location.reload();
+            }
+        });
+    }</script>

@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "Site Hakkında";
+}
+
+@model Eticaret2022.DataEntities.DataModels.SiteHakkinda
+@{ ViewBag.Title = "Hakkımızda"; }
+
+<main id="main-container" class="main-container">
+    <div class="about-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="about-img">
+                        <div class="img-responsive">
+                            <img src="@Model.HakkimizdaResimPath" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="about-content">
+                        <h4 class="font--regular">@Model.HakkimizdaBaslik</h4>
+                        <p class="para__text">
+                            @Model.HakkimizdaIcerik
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ::::::  Start CMS Section  ::::::  -->
+    <div class="cms m-t-100">
+        <div class="container">
+            <div class="row">
+                <!-- Start Single CMS box -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="cms__content">
+                        <div class="cms__icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="cms__text">
+                            <h6 class="cms__title">
+                                Doğal Ürüne
+                                %100 Destek
+                            </h6>
+                            @*<p class="para__text">Erat metus sodales eget dolor consectetuer, porta ut purus at et alias, nulla ornare velit amet</p>*@
+                        </div>
+                    </div>
+                </div> <!-- End Single CMS box -->
+                <!-- Start Single CMS box -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="cms__content">
+                        <div class="cms__icon">
+                            <i class="far fa-money-bill-alt"></i>
+                        </div>
+                        <div class="cms__text">
+                            <h6 class="cms__title">
+                                Ödeme Koruma
+                                Sistemi
+                            </h6>
+
+                        </div>
+                    </div>
+                </div> <!-- End Single CMS box -->
+                <!-- Start Single CMS box -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="cms__content">
+                        <div class="cms__icon">
+                            <i class="far fa-life-ring"></i>
+                        </div>
+                        <div class="cms__text">
+                            <h6 class="cms__title">
+                                İnternette
+                                Güvenli Alışveriş
+                            </h6>
+
+                        </div>
+                    </div>
+                </div> <!-- End Single CMS box -->
+            </div>
+        </div>
+    </div> <!-- ::::::  End CMS Section  ::::::  -->
+    <!-- ::::::  Start  Company Logo Section  ::::::  -->
+
+
+</main>
+

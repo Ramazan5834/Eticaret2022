@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Lockout";
+}
+
+<!-- ::::::  Start  Main Container Section  ::::::  -->
+<main id="main-container" class="main-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- :::::::::: Start My Account Section :::::::::: -->
+                <div class="my-account-area">
+                    <div class="row">
+                        <div class="col-xl-5 col-md-5 container mt-4">
+                            <div class="tab-content my-account-tab" id="pills-tabContent">
+                                <div aria-labelledby="pills-account-tab">
+                                    <div class="my-account-details account-wrapper">
+                                        <form>
+                                            <div class="account-details">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-box__single-group" style="text-align: center">
+                                                            @if (TempData["ResultEmail"] != null)
+                                                            {
+                                                                <h2>Çok fazla yanlış deneme yaptınız hesabınız 10 dakika için bloke edildi.Ve Email'inize gerekli uyarı mesajı gönderildi.Lütfen 10 dakika sonra tekrar deneyiniz.</h2>
+                                                            }
+                                                            else
+                                                            {
+                                                                <h2>Çok fazla yanlış deneme yaptınız hesabınız 10 dakika için bloke edildi.Lütfen 10 dakika sonra tekrar deneyiniz.</h2>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- :::::::::: End My Account Section :::::::::: -->
+            </div>
+        </div>
+    </div>
+</main> <!-- ::::::  End  Main Container Section  ::::::  -->

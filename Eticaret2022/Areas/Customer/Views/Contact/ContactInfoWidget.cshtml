@@ -1,0 +1,53 @@
+﻿@model Eticaret2022.DataEntities.DataModels.SiteHakkinda
+@if (Model != null)
+{
+<div class="contact-info-wrap gray-bg m-t-40">
+    <div class="single-contact-info">
+        <div class="contact-icon">
+            <i class="fas fa-phone-alt"></i>
+        </div>
+        <div class="contact-info-dec">
+            <a href="tel://@Model.Tel1">@Model.Tel1</a>
+            <a href="tel://@Model.Tel2">@Model.Tel2</a>
+        </div>
+    </div>
+    <div class="single-contact-info">
+        <div class="contact-icon">
+            <i class="fas fa-globe-asia"></i>
+        </div>
+        <div class="contact-info-dec">
+            <a href="mailto://@Model.Email">@Model.Email</a>
+        </div>
+    </div>
+    <div class="single-contact-info">
+        <div class="contact-icon">
+            <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="contact-info-dec">
+            <span>@Model.Adres</span>
+        </div>
+    </div>
+    <div class="contact-social m-t-40">
+        <h5>Takip Edin !</h5>
+        <div class="social-link">
+            <ul>
+                <li>
+                    <a target="_blank" href="@Model.FacebookUrl"><i class="fab fa-facebook-f"></i></a>
+                </li>
+                <li>
+                    <a target="_blank" href="@Model.TwitterUrl"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li>
+                    <a target="_blank" href="@Model.YoutubeUrl"><i class="fab fa-youtube"></i></a>
+                </li>
+                <li>
+                    <a target="_blank" href="@Model.GoogleUrl"><i class="fab fa-google-plus-g"></i></a>
+                </li>
+                <li>
+                    <a target="_blank" href="@Model.InstagramUrl"><i class="fab fa-instagram"></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>}
+

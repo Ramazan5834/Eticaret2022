@@ -1,0 +1,189 @@
+﻿
+@{
+    ViewBag.Title = "Site Hakkında";
+}
+
+@model Eticaret2022.DataEntities.DataModels.SiteHakkinda
+
+<div class="col-sm-10 container-fluid">
+    <!-- Basic Form Inputs card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Site Hakkında</h5>
+        </div>
+        <div class="card-block">
+            <form method="post" action="/Admin/SiteAbout/UpdateSiteAbout" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Adı</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.Adi, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Adres</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.Adres, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">E-Mail</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Tel1</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.Tel1, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Tel2</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.Tel2, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Facebook Url</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.FacebookUrl, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Twitter Url</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.TwitterUrl, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Instagram Url</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.InstagramUrl, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Youtube Url</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.YoutubeUrl, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Google Url</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.GoogleUrl, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Hakkımızda Başlık</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.HakkimizdaBaslik, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Hakkımızda İçerik</label>
+                    <div class="col-sm-10">
+                        @Html.TextAreaFor(m => m.HakkimizdaIcerik, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Hakkımızda Resmi</label>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div>
+                                <h5 class="">Şu anki resminiz:</h5>
+                                <img src="@Model.HakkimizdaResimPath" style="height: 10rem !important;" alt="@Model.Adi" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="hakkimizdaAlanOnizleme" style="display: none !important;">
+                                <h5 class="text-center">Seçtiğiniz resim:</h5>
+                                <img id="hakkimizdaResimOnizleme" class="w-100" style="height: 10rem !important;" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 ml-2">
+                            <label>Resim Seç:</label>
+                            <input type="file" class="form-control-file" name="hakkimizdaImageUpload" id="hakkimizdaImageUpload" />
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.HakkimizdaResimPath)
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Logo</label>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div>
+                                <h5 class="">Şu anki resminiz:</h5>
+                                <img src="@Model.LogoPath" style="height: 10rem !important;" alt="@Model.Adi" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="logoAlanOnizleme" style="display: none !important;">
+                                <h5 class="text-center">Seçtiğiniz resim:</h5>
+                                <img id="logoResimOnizleme" class="w-100" style="height: 10rem !important;" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 ml-2">
+                            <label>Resim Seç:</label>
+                            <input type="file" class="form-control-file" name="logoImageUpload" id="logoImageUpload" />
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.LogoPath)
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Banner</label>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div>
+                                <h5 class="">Şu anki resminiz:</h5>
+                                <img src="@Model.BannerResimPath" style="height: 10rem !important;" alt="@Model.Adi" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="bannerAlanOnizleme" style="display: none !important;">
+                                <h5 class="text-center">Seçtiğiniz resim:</h5>
+                                <img id="bannerResimOnizleme" class="w-100" style="height: 10rem !important;" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 ml-2">
+                            <label>Resim Seç:</label>
+                            <input type="file" class="form-control-file" name="bannerImageUpload" id="bannerImageUpload" />
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.BannerResimPath)
+                <br />
+                <button type="submit" class="btn waves-effect waves-light btn-primary"><i class="icofont icofont-check-circled"></i>Kaydet</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#hakkimizdaImageUpload").change(function(e) {
+                $("#hakkimizdaAlanOnizleme").show();
+                $("#hakkimizdaResimOnizleme").attr("src", URL.createObjectURL(e.target.files[0]));
+            });
+
+            $("#logoImageUpload").change(function(e) {
+                $("#logoAlanOnizleme").show();
+                $("#logoResimOnizleme").attr("src", URL.createObjectURL(e.target.files[0]));
+            });
+
+            $("#bannerImageUpload").change(function(e) {
+                $("#bannerAlanOnizleme").show();
+                $("#bannerResimOnizleme").attr("src", URL.createObjectURL(e.target.files[0]));
+            });
+        })
+    </script>
+
+    
+}

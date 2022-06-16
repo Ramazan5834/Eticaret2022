@@ -1,0 +1,246 @@
+﻿
+@{
+    ViewBag.Title = "Son Sepet Görünümü";
+}
+@model Eticaret2022.BussinessLayer.Basket.Basket
+<!-- ::::::  Start  Main Container Section  ::::::  -->
+<main id="main-container" class="main-container">
+    @if (Model.BasketLines.Count > 0)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Start Cart Table -->
+                    <div class="table-content table-responsive cart-table-content m-t-30">
+                        <table>
+                            <thead class="gray-bg">
+                                <tr>
+                                    <th>Resim</th>
+                                    <th>Ürün Adı</th>
+                                    <th>Adet Fiyat</th>
+                                    <th>Adet</th>
+                                    <th>Total Fiyat</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.BasketLines)
+                                {
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="#"><img class="img-fluid" src="@item.Urun.ResimPath" alt=""></a>
+                                        </td>
+                                        <td class="product-name"><a href="#">@item.Urun.Adi</a></td>
+                                        <td class="product-price-cart"><span class="amount">@item.Urun.Fiyat</span></td>
+                                        <td class="product-quantities">
+                                            @*<div class="quantity d-inline-block">
+                                                <input type="number" min="1" step="1" value="@item.Adet">
+                                            </div>*@
+                                            <div class="product-quantity product-var__item d-flex align-items-center flex-wrap">
+                                                <form class="modal-quantity-scale m-l-20">
+                                                    <div class="value-button"  onclick="sepetAzalt(@item.Urun.Id)">-</div>
+                                                    <input type="number" id="modal-number" value="@item.Adet" />
+                                                    <div class="value-button" onclick="sepetArttir(@item.Urun.Id)">+</div>
+                                                </form>
+                                                <br />
+                                            </div>
+                                        </td>
+                                        @{
+                                            double totalFiyat = item.Adet * item.Urun.Fiyat;
+                                            <td class="product-subtotal">@totalFiyat</td>
+                                        }
+                                        <td class="product-remove">
+                                            <a onclick="urunsil(@item.Urun.Id)"><i class="fa fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div> <!-- End Cart Table -->
+                    <!-- Start Cart Table Button -->
+                    <div class="cart-table-button m-t-10">
+                        <div class="cart-table-button--left">
+                            <a href="/anasayfa" class="btn btn--box btn--large btn--radius btn--green btn--green-hover-black btn--uppercase font--bold m-t-20">Alışverişe Devam Et</a>
+                        </div>
+                        <div class="cart-table-button--right">
+                            <a onclick="sepetBosalt()" class="btn btn--box btn--large btn--radius btn--black btn--black-hover-green btn--uppercase font--bold m-t-20">Sepeti Boşalt</a>
+                        </div>
+                    </div> <!-- End Cart Table Button -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+
+                </div>
+                <div class="col-lg-4 col-md-6">
+
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="sidebar__widget m-t-40">
+                        <div class="sidebar__box">
+                            <h5 class="sidebar__title">Sepet Bilgisi</h5>
+                        </div>
+                        <h6 class="total-cost">Sepetteki Ürün Sayısı<span>@Model.BasketLines.Sum(ss => ss.Adet).ToString()</span></h6>
+                        <h4 class="grand-total m-tb-25">Toplam Tutar <span>@Model.TotalPrice().ToString("c") TL</span></h4>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a href="/odeme" class="btn btn--block btn--radius btn--box btn--black btn--black-hover-green btn--large btn--uppercase font--bold">ÖDEME YAP</a>
+                        }
+                        else
+                        {
+                            <a href="/giris-yap" class="btn btn--block btn--radius btn--box btn--black btn--black-hover-green btn--large btn--uppercase font--bold">Sipariş Vermek İçin Giriş Yap</a>}
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-content">
+                        <h5 class="section-content__title">Sepette Herhangi Bir Ürün Bulunamadı</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</main> <!-- ::::::  End  Main Container Section  ::::::  -->
+
+@section Scripts
+{
+    <script>
+        function sepetAzalt(urunId) {
+            var adet = 1;
+            var Id = urunId;
+
+            $.ajax({
+                method: "Post",
+                url: "/Customer/Basket/RemoveProductSelected",
+                data: { Id: Id, adet: adet },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.rtnValue == true) {
+                        $('#modalAddCart').modal('hide');
+                        ShowMessage("Ürün Başarıyla Sepetten Çıkarılmıstır.", "s");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                }
+            });
+
+        }
+        function sepetArttir(urunId) {
+            var adet = 1;
+            var Id = urunId;
+
+            $.ajax({
+                method: "POST",
+                url: "/Customer/Home/GetStokCount",
+                data: { Id: Id },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.durum == true) {
+                        var urunstokcount = data.urunStokCount;
+                        var modalStokCount = parseInt($('#modal-number').val());
+                        if (modalStokCount > urunstokcount) {
+                            $('#modalAddCart').modal('hide');
+                            ShowMessage("Stok Sayısını Aştınız Lütfen Tekrar Deneyiniz!", "e");
+                        }
+                        else {
+                            $.ajax({
+                                method: "Post",
+                                url: "/Customer/Basket/AddProduct",
+                                data: { Id: Id, adet: adet },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.rtnValue == true) {
+                                        $('#modalAddCart').modal('hide');
+                                        ShowMessage("Ürün Başarıyla Sepete Eklenmiştir.", "s");
+                                        setTimeout(function () {
+                                            window.location.reload();
+                                        }, 2000);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+
+        }
+        function ShowMessage(message, type) {
+            if (type == "s") {
+                swal({
+                    title: 'İşlem Başarılı',
+                    text: message,
+                    type: 'success',
+                    showCancelButtonClass: 'btn-success',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+            else {
+                swal({
+                    title: 'İşlem Başarısız',
+                    text: message,
+                    type: 'error',
+                    showCancelButtonClass: 'btn-danger',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+        }
+
+
+        function urunsil(Id) {
+            swal({
+                title: 'Silme İşlemi',
+                text: 'Seçtiğiniz ürünü sepetten çıkarmak istediğinizden emin misiniz? ',
+                type: 'warning',
+                showCancelButton: true,
+                confrimButtonClass: 'btn-danger',
+                confirmButtonText: 'Evet',
+                cancelButtonText: 'Hayır',
+                closeOnConfrim: false,
+                closeOnCancel: false
+            },
+                function (isConfrim) {
+                    if (isConfrim) {
+                        $.ajax({
+                            method: "Post",
+                            url: "/Customer/Basket/RemoveProduct",
+                            data: { Id: Id },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.rtnValue == true) {
+                                    window.location.reload();
+                                    setTimeout(function () {
+                                        ShowMessage("Ürün Başarılı Bir Şekilde Sepetten Silindi !", "s");
+                                    }, 3000);
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        swal({ title: 'Kapatıldı', text: 'ürünü sepetten çıkarmaktan vazgeçtiniz.', type: 'error', confirmButtonText: 'Tamam' });
+                    }
+                }
+            );
+
+
+        }
+
+
+        function sepetBosalt() {
+            $.ajax({
+                method: "Post",
+                url: "/Customer/Basket/ClearBasket",
+                success: function (data) {
+                    window.location.reload();
+                }
+            });
+        }</script>
+}

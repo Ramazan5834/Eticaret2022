@@ -1,0 +1,227 @@
+﻿
+@{
+    ViewBag.Title = "Sipariş Detay";
+}
+@using Microsoft.Ajax.Utilities
+@model Eticaret2022.DataEntities.DataModels.SatisDetay
+@Html.Partial("PartialDeleteModal", "Sipariş Reddet")
+@{
+    string colorCode = null;
+    if ((int)TempData["pageState"] == 1)
+    {
+        colorCode = "#93d2ff63";
+    }
+    else if ((int)TempData["pageState"] == 2)
+    {
+        colorCode = "#78ff5673";
+    }
+    else if ((int)TempData["pageState"] == 3)
+    {
+        colorCode = "#ff6464bd";
+    }
+}
+
+<div class="card" style="background-color: @colorCode">
+    <div class="card-block caption-breadcrumb">
+        <div class="breadcrumb-header">
+            <h5>Sipariş Detayları</h5>
+            <span>Sipariş Veren : @Model.AspNetUsers.Name @Model.AspNetUsers.Surname</span>
+            <span>İletişim Bilgileri : @Model.AspNetUsers.Email - @Model.AspNetUsers.PhoneNumber</span>
+            <span>Total Fiyat : @Model.TotalFiyat TL</span>
+            <span>Tarih : @Model.Tarih</span>
+            <span>Adres : @Model.Adres.Baslik @Model.Adres.Sehir @Model.Adres.Ilce @Model.Adres.AcikAdres @Model.Adres.PostaKodu</span>
+            <span>Ödeme Tipi : @Model.OdemeTip.Adi</span>
+            <hr />
+            @if (Model.Fatura.FirmaAdi != null)
+            {
+                <h5>Fatura Bilgileri (Kurumsal Fatura)</h5>
+                <span>TC Kimlik Numarası : @Model.Fatura.TcKimlik</span>
+                <span>Vergi No : @Model.Fatura.VergiNo</span>
+                <span>Vergi Dairesi : @Model.Fatura.VergiDairesi</span>
+                <span>Firma Adı : @Model.Fatura.FirmaAdi</span>
+            }
+            else
+            {
+                <h5>Fatura Bilgileri (Bireysel Fatura)</h5>
+                <span>TC Kimlik Numarası : @Model.Fatura.TcKimlik</span>
+            }
+
+            @if ((int)TempData["pageState"] == 2)
+            {
+                if (Model.KargoNumarasi == 0)
+                {
+                    <span id="createCargoSpan">
+                        <a style="color: white" onclick="openCargoCreateForm()" class="btn btn-sm waves-effect waves-light btn-grd-danger"><i class="icofont icofont-bag"></i>Kargoya Ver</a>
+                    </span>
+                }
+                else
+                {
+                    <span id="editCargoSpan">
+                        Kargo Numarası : @Model.KargoNumarasi -
+                        <a style="color: white" onclick="openCargoEditForm()" class="btn btn-sm waves-effect waves-light btn-grd-inverse"><i class="icofont icofont-edit"></i>Kargo Numarasını Düzenle</a>
+                    </span>
+                }
+                <span>
+                    <form method="post" action="/Admin/Order/OrderCargoCode" style="display: none" id="cargoForm">
+                        <div class="form-group row">
+                            <div class="col-sm-7">
+                                <input type="hidden" name="orderId" value="@Model.Id" />
+                                @if (Model.KargoNumarasi == 0)
+                                {
+                                    <input name="cargoCode" class="form-control" type="text" />
+                                }
+                                else
+                                {
+                                    <input name="cargoCode" value="@Model.KargoNumarasi" class="form-control" type="text" />
+                                }
+                            </div>
+                            <div class="col-sm-5">
+                                <button type="button" onclick="disableCargoConfirm()" class="btn btn-sm waves-effect waves-light btn-grd-inverse" id="btn-cargo-confirm"><i class="icofont icofont-tick-mark"></i>Onayla</button>
+                            </div>
+                        </div>
+                    </form>
+                </span>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-top: -20px">
+    <div class="card-block table-border-style">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Resim</th>
+                        <th>Ürün Adı</th>
+                        <th>Fiyat</th>
+                        <th>Adet</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var satilanUrun in Model.SatilanUrun)
+                    {
+                        <tr>
+                            <td><img style="height: 70px" src="@satilanUrun.Urun.ResimPath" /></td>
+                            <td>@satilanUrun.Urun.Adi</td>
+                            <td>@satilanUrun.UrunAnlikFiyat TL</td>
+                            <td>@satilanUrun.Adet</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+@if ((int)TempData["pageState"] == 1)
+{
+    <div class="card" style="margin-top: -20px">
+        <div class="card-block">
+            <div class="text-center m-r-20">
+                <a href="/Admin/Order/ConfirmOrder?orderId=@Model.Id" class="btn btn-success confirmInfo" onclick="setTimeout(function(){document.getElementById('btn-confirm-order').removeAttribute('href');}, 0.1);" id="btn-confirm-order">
+                    <i style="color: white" class="icofont icofont-ui-check"></i>Siparişi Onayla
+                </a>
+                <a href="#myModal" class="btn btn-danger openModal" data-modid="@Model.Id" data-modtitle="@Model.TotalFiyat" data-toggle="modal">
+                    <i style="color: white" class="icofont icofont-ui-delete"></i>Siparişi Reddet
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Cargo Modal -->
+<div class="modal fade" id="myCargoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 0px">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer" style="border-top: 0px">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    @if (TempData["EmailState"] != null)
+    {
+        bool emailState = (bool) TempData["EmailState"];
+        if (emailState)
+        {
+            <script>
+                $(window).on('load',
+                    function() {
+                        $(".modal-content").css("background-color", "lightgreen");
+                        $('#exampleModalLongTitle').text("İşlem Başarılı");
+                        $('.modal-body').text("Kargo Numarası Oluşturuldu Müşteriye E-mail Olarak Gönderildi");
+                        $('#myCargoModal').modal('show');
+                    });
+            </script>
+        }
+        else
+        {
+            <script>
+                $(window).on('load',
+                    function() {
+                        $(".modal-content").css("background-color", "darksalmon");
+                        $('#exampleModalLongTitle').text("Bir Sıkıntı Oluştu");
+                        $('.modal-body').text("Kargo Numarası Oluşturuldu Ancak Müşteriye Gerekli E-mail Gönderilemedi!!!");
+                        $('#myCargoModal').modal('show');
+                    });
+            </script>
+        }
+    }
+    <script>
+        $(".openModal").click(function() {
+            $(".modal-body>p.error").html("");
+            var title = $(this).data("modtitle");
+            $(".modal-body>p.message").html(title + " toplam fiyatlı sipariş reddedilsinmi?");
+            $(".modal-body>p.error").html("Dikkat Yaptığınız İşlemin Geri Dönüşü Yok");
+            var id = $(this).data("modid");
+            $(".delModal").data("id", id);
+
+        });
+
+        $(".delModal").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Order/RejectOrder/" + id,
+                success: function(durum) {
+                    if (durum) {
+                        window.location.replace("/Admin/Order/NewOrders");
+                    } else {
+                        $(".modal-body>p.error").html("Bir hata oluştu");
+                    }
+                }
+            });
+        });
+
+        function openCargoCreateForm() {
+            document.getElementById("cargoForm").style.display = "block";
+            document.getElementById("createCargoSpan").style.display = "none";
+        }
+
+        function openCargoEditForm() {
+            document.getElementById("cargoForm").style.display = "block";
+            document.getElementById("editCargoSpan").style.display = "none";
+        }
+
+        function disableCargoConfirm() {
+            var btn = document.getElementById('btn-cargo-confirm');
+            btn.disabled = true;//butonu tıklar tıklamaz disable
+            btn.innerText = 'Kargo Bilgisi Gönderiliyor BEKLEYİNİZ...';
+            document.getElementById("cargoForm").submit();
+        }
+
+    </script>
+}

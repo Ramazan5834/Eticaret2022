@@ -1,0 +1,529 @@
+﻿@model Eticaret2022.Areas.Customer.Models.PaymentGetModel
+@{ ViewBag.Title = "Sipariş Ver";
+    Layout = "~/Areas/Customer/Views/Shared/_Layout.cshtml";
+    var basketInfo = (Eticaret2022.BussinessLayer.Basket.Basket)Session["Basket"]; }
+
+@section Csses
+{
+    <link rel="stylesheet" href="/Content/CustomCss/PaymentIndex.css" />
+}
+
+<main id="main-container" class="main-container">
+    <div class="container">
+        <div class="row">
+            <!-- Start Client Shipping Address -->
+            <div class="col-lg-7">
+                <div class="section-content">
+                    <h5 class="section-content__title">Sipariş Detayları</h5>
+                </div>
+                <form class="form-box">
+                    <div class="row">
+                        <div class="payment-method">
+                            <div class="payment-accordion element-mrg">
+                                <div class="panel-group" id="accordion">
+                                    <div class="panel payment-accordion">
+                                        <div class="panel-heading" id="method-one">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed d-flex justify-content-between align-items-center" style=" color: white; margin: 10px; padding: 10px; background-color: #89c74a;" data-toggle="collapse" data-parent="#accordion" href="#method10" aria-expanded="false">
+                                                    Adres <i class="far fa-chevron-down"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="method10" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                @if (Model.userAddressList.Count == 0)
+                                                {
+                                    <p>Tanımlı adresiniz bulunmamaktadır.Lütfen  <a href="/adres-ekle" style="color: #89c74a" target="_blank">Buradan</a> adres tanımlayınız.. </p> <!--buradaki namelerin başında Adres var çünkü bu modeli biz olusturacağız ve birçok bilgi olacak bu yüzden basında neyin bilgisi oldugu yazmalı ki karıştırmayalım.--> }
+                                else
+                                {
+                    <div class="col-md-12">
+                        <div class="form-box__single-group">
+                            <label for="form-country">* Adres</label>
+                            <select id="form-country" name="AddressId">
+                                <option value="0" selected> Adres Seçiniz</option>
+                                @foreach (Eticaret2022.DataEntities.DataModels.Adres item in Model.userAddressList)
+                                {
+                <option value="@item.Id">@item.Baslik</option>
+}
+                            </select>
+                        </div>
+                    </div>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel payment-accordion">
+                                        <div class="panel-heading" id="method-two">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed d-flex justify-content-between align-items-center" style=" color: white; margin: 10px; padding: 10px; background-color: #89c74a;" data-toggle="collapse" data-parent="#accordion" href="#method20" aria-expanded="false">
+                                                    Ticari Bilgiler <i class="far fa-chevron-down"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="method20" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div class="col-md-6" id="">
+                                                    <div class="form-box__single-group">
+                                                        <label for="form-state">* Fatura Tipi </label>
+                                                        <select id="individualType" name="individualType">
+                                                            <option value="0" selected>Fatura Tipi Seçiniz</option>
+                                                            <option value="1">Bireysel</option>
+                                                            <option value="2">Kurumsal</option>
+                                                        </select>
+                                                        <br />
+                                                        <div class="bireysel-content">
+                                                            
+                                                            </div>
+                                                        <div class="kurumsal-content">
+                                                           
+                                                        </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel payment-accordion">
+                                        <div class="panel-heading" id="method-three">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed d-flex justify-content-between align-items-center" style=" color: white; margin: 10px; padding: 10px; background-color: #89c74a;" data-toggle="collapse" data-parent="#accordion" href="#method30" aria-expanded="false">
+                                                    Kargo <i class="far fa-chevron-down"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="method30" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <p>Ürünlerimiz karşı ödemeli kargo şeklinde gönderilecektir. Detaylı bilgi için <a href="https://api.whatsapp.com/send?phone=+05467873252&amp;text=Merhaba" style="color: #89c74a" target="_blank">whatsapp destekten</a> iletişime geçebilirsiniz.. </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel payment-accordion">
+                                        <div class="panel-heading" id="method-three">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed d-flex justify-content-between align-items-center" style=" color: white; margin: 10px; padding: 10px; background-color: #89c74a;" data-toggle="collapse" data-parent="#accordion" href="#method50" aria-expanded="false">
+                                                    Ödeme <i class="far fa-chevron-down"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="method50" class="panel-collapse collapse">
+                                            <div class="panel-body " style="height:700px">
+
+                                                <div class="col-md-6" id="select-payment">
+                                                    <div class="form-box__single-group">
+                                                        <label for="form-state">* Ödeme Şekli </label>
+                                                        <select id="payment-selected" name="PaymentType">
+                                                            <option value="0" selected>Ödeme Şekli Seçiniz</option>
+                                                            @foreach (Eticaret2022.DataEntities.DataModels.OdemeTip item in Model.paymentTypeList)
+                                                            {
+                                                <option value="@item.Id">@item.Adi</option>
+}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-body" id="credit-card-form">
+                                                    <div class="container">
+                                                        <div class="col1">
+                                                            <div class="card">
+                                                                <div class="front">
+                                                                    <div class="type">
+                                                                        <img class="bankid" />
+                                                                    </div>
+                                                                    <span class="chip"></span>
+                                                                    <span class="card_number">&#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; </span>
+                                                                    <div class="date"><span class="date_value">Ay /Yıl</span></div>
+                                                                    <span class="fullname">Ad Soyad</span>
+                                                                </div>
+                                                                <div class="back">
+                                                                    <div class="magnetic"></div>
+                                                                    <div class="bar"></div>
+                                                                    <span class="seccode">&#x25CF;&#x25CF;&#x25CF;</span>
+                                                                    <span class="chip"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col2">
+                                                            <label>Kart Numarası</label>
+                                                            <input class="number" name="CreditCardNo" type="text" ng-model="ncard" maxlength="19" onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+                                                            <label>Ad Soyad</label>
+                                                            <input type="text" name="NameSurname" class="inputname" placeholder="" />
+                                                            <label>Son Kullanım Tarihi</label>
+                                                            <input class="expire" name="CreditCardYearMonth" type="text" placeholder="MM / YYYY" />
+                                                            <label>CVV</label>
+                                                            <input class="ccv" name="Cvv" type="text" placeholder="CVC" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div> <!-- End Client Shipping Address -->
+            <!-- Start Order Wrapper -->
+            <div class="col-lg-5">
+                <div class="your-order-section">
+                    <div class="section-content">
+                        <h5 class="section-content__title">Satış Detayları</h5>
+                    </div>
+                    @if (basketInfo != null)
+                    {
+                        if (basketInfo.BasketLines.Count != 0)
+                        {
+        <div class="your-order-box gray-bg m-t-40 m-b-30">
+            <div class="your-order-product-info">
+                <div class="your-order-top d-flex justify-content-between">
+                    <h6 class="your-order-top-left font--bold">Ürünler</h6>
+                    <h6 class="your-order-top-right font--bold">Toplam</h6>
+                </div>
+                <ul class="your-order-middle">
+                    @foreach (var item in basketInfo.BasketLines.ToList())
+                    {
+<li class="d-flex justify-content-between">
+    <span class="your-order-middle-left font--semi-bold">@item.Urun.Adi X @item.Adet</span>
+    <span class="your-order-middle-right font-semi-bold">
+        @{ string totalpriceproduct = (item.Urun.Fiyat * item.Adet).ToString();
+<strong>@totalpriceproduct TL</strong> }
+    </span>
+</li>
+}
+
+                </ul>
+                <div class="your-order-total d-flex justify-content-between">
+                    <h5 class="your-order-total-left font--bold">Toplam Tutar</h5>
+                    <h5 class="your-order-total-right font--bold">@basketInfo.TotalPrice() TL</h5>
+                </div>
+
+                <div class="payment-method">
+                    <div class="payment-accordion element-mrg">
+                        <div class="panel-group" id="accordion">
+                            <div class="panel payment-accordion">
+                                <div class="panel-heading" id="method-one">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed d-flex justify-content-between align-items-center" data-toggle="collapse" data-parent="#accordion" href="#method1" aria-expanded="false">
+                                            İban İle Ödeme <i class="far fa-chevron-down"></i>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="method1" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p><a href="/banka-bilgilerimiz">Banka Bilgilerimiz </a> sayfasından iban bilgilerimize ulaşabilirsiniz.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel payment-accordion">
+                                <div class="panel-heading" id="method-two">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed d-flex justify-content-between align-items-center" data-toggle="collapse" data-parent="#accordion" href="#method2" aria-expanded="false">
+                                            Kredi Kartı ile Ödeme <i class="far fa-chevron-down"></i>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="method2" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p>Kredi Kartı bilgilerinizi sol tarafdaki alanadan girip ödeme seçeneği olarak kredi kartı ile ödeeme seçeneğini seçtikten sonra işleminizi yapabilirsiniz.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel payment-accordion">
+                                <div class="panel-heading" id="method-three">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed d-flex justify-content-between align-items-center" data-toggle="collapse" data-parent="#accordion" href="#method3" aria-expanded="false">
+                                            Kapıda Ödeme <i class="far fa-chevron-down"></i>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="method3" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <p>Kargo ücreti size ait olacak şekilde sipariş verebilirsiniz. </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> }
+    else
+    {
+<span>Sepette Ürün Bulunmamaktadır.Lütfen Ürün Seçiniz!</span>
+                    <br />
+                                        <br />}
+                                }
+
+                    @if (basketInfo != null)
+                    {
+                        if (basketInfo.BasketLines.Count != 0)
+                        {
+
+        <div class="text-center">
+            <button class="btn btn--small btn--radius btn--green btn--green-hover-black btn--uppercase font--bold" id="btn-payment">Ödeme Yap</button>
+        </div>}
+}
+
+
+                </div>
+            </div> <!-- End Order Wrapper -->
+        </div>
+    </div>
+</main>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $('#individualType').click(function(){
+            if ($(this).val() == "1") {
+                $('.kurumsal-content').hide();
+                $('.kurumsal-content').html('');
+                $('.bireysel-content').show();
+                $('.bireysel-content').html('');
+                $('.bireysel-content').append("<div class='form-group'><label> Tc Kimlik No</label ><input type='text' class='form-control' name='tckimlik' placeholder='Tc Kimlik No' id='tckimlik' /></div >");
+            }
+            else if ($(this).val() == "2") {
+                $('.kurumsal-content').show();
+                $('.bireysel-content').hide();
+                $('.bireysel-content').html('');
+                $('.kurumsal-content').html('');
+                $('.kurumsal-content').append("<div class='form-group'><label> Tc Kimlik No</label ><input type='text' class='form-control' name='tckimlik' placeholder='Tc Kimlik No' id='tckimlik' /></div >");
+                $('.kurumsal-content').append("<div class='form-group'><label> Firma Adı</label ><input type='text' class='form-control' name='firmaadi' placeholder='Firma Adı' id='firmaadi' /></div >");
+                $('.kurumsal-content').append("<div class='form-group'><label> Vergi No</label ><input type='text' class='form-control' name='vergino' placeholder='Vergi No' id='vergino' /></div >");
+                $('.kurumsal-content').append("<div class='form-group'><label> Vergi Dairesi</label ><input type='text' class='form-control' name='vergidairesi' placeholder='Vergi Dairesi' id='vergidairesi' /></div >");
+            }
+            else {
+                $('.bireysel-content').hide();
+                $('.kurumsal-content').hide();
+            }
+        
+        
+        });
+
+        $(document).ready(function () {
+            $('.bireysel-content').hide();
+            $('.kurumsal-content').hide();
+            $('#credit-card-form').hide();
+
+        });
+        $('#payment-selected').change(function () {
+            if ($(this).val() == "3") {
+                $('#credit-card-form').show();
+            }
+            else {
+                $('#credit-card-form').hide();
+            }
+        });
+
+        $(function () {
+
+            var cards = [{
+                nome: "mastercard",
+                colore: "#0061A8",
+                src: "https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
+            }, {
+                nome: "visa",
+                colore: "#E2CB38",
+                src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2000px-Visa_Inc._logo.svg.png"
+            }, {
+                nome: "dinersclub",
+                colore: "#888",
+                src: "http://www.worldsultimatetravels.com/wp-content/uploads/2016/07/Diners-Club-Logo-1920x512.png"
+            }, {
+                nome: "americanExpress",
+                colore: "#108168",
+                src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/American_Express_logo.svg/600px-American_Express_logo.svg.png"
+            }, {
+                nome: "discover",
+                colore: "#86B8CF",
+                src: "https://lendedu.com/wp-content/uploads/2016/03/discover-it-for-students-credit-card.jpg"
+            }, {
+                nome: "dankort",
+                colore: "#0061A8",
+                src: "https://upload.wikimedia.org/wikipedia/commons/5/51/Dankort_logo.png"
+            }];
+
+            var month = 0;
+            var html = document.getElementsByTagName('html')[0];
+            var number = "";
+
+            var selected_card = -1;
+
+            $(document).click(function (e) {
+                if (!$(e.target).is(".ccv") || !$(e.target).closest(".ccv").length) {
+                    $(".card").css("transform", "rotatey(0deg)");
+                    $(".seccode").css("color", "var(--text-color)");
+                }
+                if (!$(e.target).is(".expire") || !$(e.target).closest(".expire").length) {
+                    $(".date_value").css("color", "var(--text-color)");
+                }
+                if (!$(e.target).is(".number") || !$(e.target).closest(".number").length) {
+                    $(".card_number").css("color", "var(--text-color)");
+                }
+                if (!$(e.target).is(".inputname") || !$(e.target).closest(".inputname").length) {
+                    $(".fullname").css("color", "var(--text-color)");
+                }
+            });
+
+
+            //Card number input
+            $(".number").keyup(function (event) {
+                $(".card_number").text($(this).val());
+                number = $(this).val();
+
+                if (parseInt(number.substring(0, 2)) > 50 && parseInt(number.substring(0, 2)) < 56) {
+                    selected_card = 0;
+                } else if (parseInt(number.substring(0, 1)) == 4) {
+                    selected_card = 1;
+                } else if (parseInt(number.substring(0, 2)) == 36 || parseInt(number.substring(0, 2)) == 38 || parseInt(number.substring(0, 2)) == 39) {
+                    selected_card = 2;
+                } else if (parseInt(number.substring(0, 2)) == 34 || parseInt(number.substring(0, 2)) == 37) {
+                    selected_card = 3;
+                } else if (parseInt(number.substring(0, 2)) == 65) {
+                    selected_card = 4;
+                } else if (parseInt(number.substring(0, 4)) == 5019) {
+                    selected_card = 5;
+                } else {
+                    selected_card = -1;
+                }
+
+                if (selected_card != -1) {
+                    html.setAttribute("style", "--card-color: " + cards[selected_card].colore);
+                    $(".bankid").attr("src", cards[selected_card].src).show();
+                } else {
+                    html.setAttribute("style", "--card-color: #cecece");
+                    $(".bankid").attr("src", "").hide();
+                }
+
+                if ($(".card_number").text().length === 0) {
+                    $(".card_number").html("&#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF;");
+                }
+
+            }).focus(function () {
+                $(".card_number").css("color", "white");
+            }).on("keydown input", function () {
+
+                $(".card_number").text($(this).val());
+
+                if (event.key >= 0 && event.key <= 9) {
+                    if ($(this).val().length === 4 || $(this).val().length === 9 || $(this).val().length === 14) {
+                        $(this).val($(this).val() + " ");
+                    }
+                }
+            })
+
+            //Name Input
+            $(".inputname").keyup(function () {
+                $(".fullname").text($(this).val());
+                if ($(".inputname").val().length === 0) {
+                    $(".fullname").text("FULL NAME");
+                }
+                return event.charCode;
+            }).focus(function () {
+                $(".fullname").css("color", "white");
+            });
+
+            //Security code Input
+            $(".ccv").focus(function () {
+                $(".card").css("transform", "rotatey(180deg)");
+                $(".seccode").css("color", "white");
+            }).keyup(function () {
+                $(".seccode").text($(this).val());
+                if ($(this).val().length === 0) {
+                    $(".seccode").html("&#x25CF;&#x25CF;&#x25CF;");
+                }
+            }).focusout(function () {
+                $(".card").css("transform", "rotatey(0deg)");
+                $(".seccode").css("color", "var(--text-color)");
+            });
+
+
+            //Date expire input
+            $(".expire").keypress(function (event) {
+                if (event.charCode >= 48 && event.charCode <= 57) {
+                    if ($(this).val().length === 1) {
+                        $(this).val($(this).val() + event.key + " / ");
+                    } else if ($(this).val().length === 0) {
+                        if (event.key == 1 || event.key == 0) {
+                            month = event.key;
+                            return event.charCode;
+                        } else {
+                            $(this).val(0 + event.key + " / ");
+                        }
+                    } else if ($(this).val().length > 2 && $(this).val().length < 9) {
+                        return event.charCode;
+                    }
+                }
+                return false;
+            }).keyup(function (event) {
+                $(".date_value").html($(this).val());
+                if (event.keyCode == 8 && $(".expire").val().length == 4) {
+                    $(this).val(month);
+                }
+
+                if ($(this).val().length === 0) {
+                    $(".date_value").text("MM / YYYY");
+                }
+            }).keydown(function () {
+                $(".date_value").html($(this).val());
+            }).focus(function () {
+                $(".date_value").css("color", "white");
+            });
+        });
+
+
+        // payment process
+
+        $('#btn-payment').click(function () {
+            var addressId = $('#form-country').val();
+            var individualType = $('#individualType').val();
+            var PaymentType = $('#payment-selected').val();
+            var tckimlik = $('#tckimlik').val();
+            var vergino = $('#vergino').val();
+            var vergidairesi = $('#vergidairesi').val();
+            var firmaadi = $('#firmaadi').val();
+            if (PaymentType == '3') {
+                ShowMessage("Kredi Kartı ile Ödeme Seçeneği Henüz Aktif Değildir", 'e');
+            }
+            else {
+                if (addressId == '0' || addressId == undefined || individualType == '0' || individualType == undefined || PaymentType == '0' || PaymentType == undefined) {
+                    ShowMessage("Lütfen Gerekli Alanları Doldurunuz !", 'e');
+                } else {
+                    var btn = document.getElementById('btn-payment');
+                    btn.disabled = true;//butonu tıklar tıklamaz disable
+                    btn.innerText = 'Siparişiniz Oluşturuluyor Bekleyin...';
+
+                    var data = new Object();
+                    data.AddressId = addressId;
+                    data.IndividualType = individualType;
+                    data.PaymentType = PaymentType;
+                    data.TcKimlik = tckimlik;
+                    data.VergiNo = vergino;
+                    data.VergiDairesi = vergidairesi;
+                    data.FirmaAdi = firmaadi;
+
+                    $.ajax({
+                        method: 'POST',
+                        url: '/Customer/Payment/Payment',
+                        dataType: 'json',
+                        data: data,
+                        success: function (data) {
+                            ShowMessage(data.message, data.type);
+                            if (data.type == "s") {
+                                setTimeout(function () {
+                                    window.location.href = "/";
+                                }, 3000);
+                            }
+                        },
+                        error: function (data) {
+                            ShowMessage(data.message, data.type);
+                        }
+
+                    });
+
+                }
+            }
+
+
+        });
+    </script>
+}

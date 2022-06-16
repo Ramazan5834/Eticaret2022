@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "ListAdmins";
+}
+@model List<Eticaret2022.Models.ApplicationUser>
+
+@if (Model.Count != 0)
+{
+    <div class="card">
+        <div class="card-header">
+            <h5>Sisteme Kayıtlı Adminler</h5>
+            <div class="card-header-right">
+                <a style="margin-top: -12px" class="btn btn-secondary" href="/Admin/AdminSystem/CreateNewAdmin">
+                    <i style="color: white" class="icofont icofont-ui-add"></i>Yeni Admin Ekle
+                </a>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>İsim</th>
+                            <th>Soyisim</th>
+                            <th>Email</th>
+                            <th>Telefon</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var aspAdmin in Model)
+                        {
+                            <tr>
+                                <td>@aspAdmin.Name</td>
+                                <td>@aspAdmin.Surname</td>
+                                <td>@aspAdmin.Email</td>
+                                <td>@aspAdmin.PhoneNumber</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> }
+else
+{
+    <h1>Kayıtlı Admin Yok</h1>
+    <a class="btn btn-secondary" href="/Admin/AdminSystem/CreateNewAdmin"><i style="color: white" class="icofont icofont-ui-add"></i>Kayıtlı Admin Yok</a>}
+

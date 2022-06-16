@@ -1,0 +1,78 @@
+﻿@model Eticaret2022.DataEntities.DataModels.Iletisim
+@{ ViewBag.Title = "İletişim"; }
+
+<main id="main-container" class="main-container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-10 container">
+                <div class="contact-map">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-5">
+                @{Html.RenderAction("ContactInfoWidget", "Contact", new { area = "Customer" }); }
+            </div>
+            <div class="col-lg-8 col-md-7">
+                <div class="contact-form gray-bg m-t-40">
+                    <div class="section-content">
+                        <h5 class="section-content__title">İletişime Geç</h5>
+                    </div>
+                    @using (Html.BeginForm("ContactConnect", "Contact", FormMethod.Post, new { @class = "contact-form-style", @id = "contact-form" }))
+                    {
+        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(a => a.Okundu, new { @Value = false });
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-box__single-group">
+                    @Html.TextBoxFor(a => a.AdSoyad, new { @placeholder = "İsim/Soyisim" })
+                    @Html.ValidationMessageFor(a => a.AdSoyad, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-box__single-group">
+                    @Html.TextBoxFor(a => a.Email, new { @placeholder = "Email" })
+                    @Html.ValidationMessageFor(a => a.Email, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-box__single-group">
+                    @Html.TextBoxFor(a => a.Konu, new { @placeholder = "Konu" })
+                    @Html.ValidationMessageFor(a => a.Konu, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-box__single-group">
+                    @Html.TextAreaFor(a => a.MesajIcerik, new { rows = "10", placeholder = "Mesaj İçerik" })
+                    @Html.ValidationMessageFor(a => a.MesajIcerik, null, new { @style = "color:red" })
+                </div>
+                <button class="btn btn--box btn--medium btn--radius-tiny btn--black btn--black-hover-green btn--uppercase font--bold m-t-30" type="submit">Gönder</button>
+            </div>
+        </div>}
+                    <br />
+                    @if (ViewBag.IsSuccess != null)
+                    {
+                        if (ViewBag.IsSuccess == "1")
+                        {
+        <div class=" alert alert-success">@ViewBag.Message</div>
+
+                            <script>$('#contact-form').reset();</script> }
+                                            else if (ViewBag.IsSuccess == "0")
+                                            {
+                            <div class=" alert alert-danger">@ViewBag.Message</div>}
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</main> <!-- :::::: End MainContainer Wrapper :::::: -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGM-62ap9R-huo50hJDn05j3x-mU9151Y"></script>
+
+@section Scripts
+{
+    <script src="/Content/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="/Content/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

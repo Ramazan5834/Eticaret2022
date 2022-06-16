@@ -1,0 +1,28 @@
+﻿@model List<Eticaret2022.DataEntities.DataModels.Slider>
+<div class="row">
+    <div class="col-12">
+        <div class="hero slider-dot-fix slider-dot slider-dot-fix slider-dot--center slider-dot-size--medium slider-dot-circle  slider-dot-style--fill slider-dot-style--fill-white-active-green dot-gap__X--10">
+            <!-- Start Single Hero Slide -->
+
+            @foreach (var item in Model)
+            {
+                <div class="hero-slider">
+                    <img src="@item.ResimPath" style="" alt="">
+                    <div class="hero__content">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 col-lg-8">
+                                    <div class="hero__content--inner">
+                                        <h2 class="title__hero title__hero--xlarge font--regular text-uppercase">@item.Baslik</h2>
+                                        <h4 class="title__hero title__hero--small font--regular">@item.Icerik</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- End Single Hero Slide -->
+            }
+
+        </div>
+    </div>
+</div>

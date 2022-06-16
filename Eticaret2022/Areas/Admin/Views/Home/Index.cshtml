@@ -1,0 +1,83 @@
+﻿
+@{ ViewBag.Title = "Anasayfa"; }
+@model Eticaret2022.Areas.Admin.Models.HomeInfoModel
+
+@if (Model.NewOrdersCount != 0)
+{<!-- Warning-color Breadcrumb card start -->
+                    <div class="card borderless-card">
+                        <div class="card-block warning-breadcrumb">
+                            <div class="breadcrumb-header">
+                                <h5 style="color: dimgray">Dikkat Onay Bekleyen Siparişler Var</h5><br />
+                                <h6 style="color: dimgray">@Model.NewOrdersCount adet onay bekleyen sipariş var</h6>
+                            </div>
+                        </div>
+                    </div> <!-- Warning-color Breadcrumb card end --> }
+                else
+                { <!-- Success-color Breadcrumb card start -->
+                                    <div class="card borderless-card">
+                                        <div class="card-block success-breadcrumb">
+                                            <div class="breadcrumb-header">
+                                                <h5>Onay Bekleyen Sipariş Yok</h5>
+                                            </div>
+                                        </div>
+                                    </div> <!-- Success-color Breadcrumb card end -->}
+
+@if (Model.NewContactsCount != 0)
+{<!-- Warning-color Breadcrumb card start -->
+                    <div class="card borderless-card">
+                        <div class="card-block warning-breadcrumb">
+                            <div class="breadcrumb-header">
+                                <h5 style="color: dimgray">Dikkat Cevap Bekleyen İletişim Kayıtları Var</h5><br />
+                                <h6 style="color: dimgray">@Model.NewContactsCount adet cevap bekleyen iletişim kaydı var</h6>
+                            </div>
+                        </div>
+                    </div> <!-- Warning-color Breadcrumb card end --> }
+                else
+                { <!-- Success-color Breadcrumb card start -->
+                                    <div class="card borderless-card">
+                                        <div class="card-block success-breadcrumb">
+                                            <div class="breadcrumb-header">
+                                                <h5>Cevap Bekleyen İletişim Kaydı Yok</h5>
+                                            </div>
+                                        </div>
+                                    </div> <!-- Success-color Breadcrumb card end -->}
+
+@if (Model.UnconfirmedCommentsCount != 0)
+{<!-- Warning-color Breadcrumb card start -->
+                    <div class="card borderless-card">
+                        <div class="card-block warning-breadcrumb">
+                            <div class="breadcrumb-header">
+                                <h5 style="color: dimgray">Dikkat Cevap Bekleyen Ürün Yorumları Var</h5><br />
+                                <h6 style="color: dimgray">@Model.UnconfirmedCommentsCount adet onay bekleyen ürün yorumu var</h6>
+                            </div>
+                        </div>
+                    </div> <!-- Warning-color Breadcrumb card end --> }
+                else
+                { <!-- Success-color Breadcrumb card start -->
+                                    <div class="card borderless-card">
+                                        <div class="card-block success-breadcrumb">
+                                            <div class="breadcrumb-header">
+                                                <h5>Onay Bekleyen Ürün Yorumu Yok</h5>
+                                            </div>
+                                        </div>
+                                    </div> <!-- Success-color Breadcrumb card end -->}
+
+@if (Model.LowStockProductsCount != 0)
+{<!-- Warning-color Breadcrumb card start -->
+                    <div class="card borderless-card">
+                        <div class="card-block warning-breadcrumb">
+                            <div class="breadcrumb-header">
+                                <h5 style="color: dimgray">Dikkat Stoğu Biten Yada Bitmek Üzere Olan Ürünler Var</h5><br />
+                                <h6 style="color: dimgray">@Model.LowStockProductsCount adet stoğu biten yada bitmek üzere olan ürün var</h6>
+                            </div>
+                        </div>
+                    </div> <!-- Warning-color Breadcrumb card end --> }
+                else
+                { <!-- Success-color Breadcrumb card start -->
+                                    <div class="card borderless-card">
+                                        <div class="card-block success-breadcrumb">
+                                            <div class="breadcrumb-header">
+                                                <h5>Stoğu Biten Yada Azalan Ürün Yok</h5>
+                                            </div>
+                                        </div>
+                                    </div> <!-- Success-color Breadcrumb card end -->}

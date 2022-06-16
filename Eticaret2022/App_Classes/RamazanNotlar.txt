@@ -1,0 +1,11 @@
+﻿--Ramazan:
+*Initialize ayarları yapılacak
+*ctrl+f ile ramazan samet yazan yerler varmı bi kontrol et
+*Kargo stringi düzenlenecek
+*Whatsapp kısmını insta yapacaz
+*Email kontrolleri yapılacak 
+*Content HTML dosyaları silinecek(Duruma göre hepsi zaten 5-6 mb filan)
+*Resimler vs ilk ayarlamada tamamen silinecek ve sıfırdan kurulacak
+
+
+ProductProcress

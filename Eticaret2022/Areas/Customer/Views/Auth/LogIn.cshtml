@@ -1,0 +1,77 @@
+﻿
+@{ ViewBag.Title = "Giriş Yap"; }
+@model Eticaret2022.Models.LoginViewModel
+
+<!-- ::::::  Start  Main Container Section  ::::::  -->
+<main id="main-container" class="main-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- :::::::::: Start My Account Section :::::::::: -->
+                <div class="my-account-area">
+                    <div class="row">
+
+                        <div class="col-xl-5 col-md-5 container mt-4">
+                            <div class="tab-content my-account-tab" id="pills-tabContent">
+                                <div aria-labelledby="pills-account-tab">
+                                    <div class="my-account-details account-wrapper">
+                                        <h4 class="account-title">Giriş Yap</h4>
+                                        <form action="/Account/LogIn" method="post">
+                                            @Html.AntiForgeryToken()
+                                            @Html.ValidationSummary("", new { @class = "text-danger" }, "invalidLogin")
+                                            <div class="account-details">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-box__single-group">
+                                                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                                            @Html.TextBoxFor(m => m.Email, new { placeholder = "Email" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-box__single-group">
+                                                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                                            @Html.PasswordFor(m => m.Password, new { placeholder = "Parola" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2">
+                                                        <div class="form-box">
+                                                            @Html.ValidationMessageFor(m => m.RememberMe, "", new { @class = "text-danger" })
+                                                            @Html.CheckBoxFor(m => m.RememberMe)
+                                                            @Html.LabelFor(m => m.RememberMe, "Beni Hatırla", new { @class = "ml-4" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-box__single-group">
+                                                            <button type="submit" class="btn btn--box btn--radius btn--small btn--black btn--black-hover-green btn--uppercase font--bold">Giriş Yap</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-box__single-group">
+                                                            <a href="/uye-ol" class="box-btn m-t-15"><i class="far fa-save"></i> Kayıt Ol</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mt-4">
+                                                        <div class="" style="text-align: center">
+                                                            <u><a href="/sifremi-unuttum" class="box-btn m-t-15"><i class="far fa-key"></i> Şifremi Unuttum</a></u>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- :::::::::: End My Account Section :::::::::: -->
+            </div>
+        </div>
+    </div>
+</main> <!-- ::::::  End  Main Container Section  ::::::  -->
+
+@section Scripts
+{
+    <script src="/Content/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="/Content/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

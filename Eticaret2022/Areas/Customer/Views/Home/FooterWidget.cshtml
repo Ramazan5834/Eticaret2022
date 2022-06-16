@@ -1,0 +1,98 @@
+﻿@model Eticaret2022.DataEntities.DataModels.SiteHakkinda
+
+<!-- ::::::  Start  Footer ::::::  -->
+<footer class="footer m-t-100" style=" background-color: #89c74a; color: white;">
+    <div class="container">
+        <!-- Start Footer Top Section -->
+        <div class="footer__top">
+            <div class="row">
+                <div class="col-lg-4 col-md-5">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="/" class="footer__logo-link">
+                                <img class="header__logo-img img-fluid" style=" width: 100px; margin-left: 45px;" src="@Model.LogoPath" alt="SivKoop Logo">
+                            </a>
+                        </div>
+                        <ul class="footer__address">
+                            <li class="footer__address-item"><i class="fa fa-home"></i>@Model.Adres</li>
+                            <li class="footer__address-item"><i class="fa fa-phone-alt"></i> <a style="color:white" target="_blank" href="https://api.whatsapp.com/send?phone=+@Model.Tel1&text=Merhaba"> @Model.Tel1 </a></li>
+                            <li class="footer__address-item"><i class="fa fa-phone-alt"></i> <a style="color:white" target="_blank" href="https://api.whatsapp.com/send?phone=+@Model.Tel1&text=Merhaba"> @Model.Tel2 </a></li>
+                            <li class="footer__address-item"><i class="fa fa-envelope"></i>@Model.Email</li>
+                        </ul>
+                        <ul class="footer__social-nav">
+                            <li class="footer__social-list"><a href="@Model.FacebookUrl" class="footer__social-link"><i class="fab fa-facebook-f"></i></a></li>
+                            <li class="footer__social-list"><a href="@Model.TwitterUrl" class="footer__social-link"><i class="fab fa-twitter"></i></a></li>
+                            <li class="footer__social-list"><a href="@Model.YoutubeUrl" class="footer__social-link"><i class="fab fa-youtube"></i></a></li>
+                            <li class="footer__social-list"><a href="@Model.GoogleUrl" class="footer__social-link"><i class="fab fa-google-plus-g"></i></a></li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-12">
+                    <!-- Start Footer Nav -->
+                    <div class="footer__menu">
+                        <h4 class="footer__nav-title footer__nav-title--dash footer__nav-title--dash-red">Kurumsal</h4>
+                        <ul class="footer__nav">
+                            <li class="footer__list"><a href="/banka-bilgilerimiz" class="footer__link">Banka Bilgilerimiz</a></li>
+                            <li class="footer__list"><a href="/mesafeli-satis-sozlesmesi" class="footer__link">Mesafeli Satış Sözleşmesi</a></li>
+                            <li class="footer__list"><a href="/gizlilik-sozlesmesi" class="footer__link">Gizlilik Sözleşmesi</a></li>
+                            <li class="footer__list"><a href="/iptal-iade-sozlesmesi" class="footer__link">İptal İade Sözleşmesi</a></li>
+                        </ul>
+                    </div> <!-- End Footer Nav -->
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-12">
+                    <div class="footer__menu">
+                        <h4 class="footer__nav-title footer__nav-title--dash footer__nav-title--dash-red">Site Haritası</h4>
+                        <ul class="footer__nav">
+                            <li class="footer__list"><a href="/anasayfa" class="footer__link">Anasayfa</a></li>
+                            <li class="footer__list"><a href="/hakkimizda" class="footer__link">Hakkımızda</a></li>
+                            <li class="footer__list"><a href="/iletisim" class="footer__link">Bize Ulaşın</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-12">
+                    <div class="footer__menu">
+                        <h4 class="footer__nav-title footer__nav-title--dash footer__nav-title--dash-red">Hesabım</h4>
+                        <ul class="footer__nav">
+                            <li class="footer__list"><a href="/sepetim" class="footer__link">Sepetim</a></li>
+                            <li class="footer__list"><a href="/siparislerim" class="footer__link">Siparişlerim</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-12">
+                    <div class="footer__menu">
+                        <h4 class="footer__nav-title footer__nav-title--dash footer__nav-title--dash-red">Üyelik</h4>
+                        <ul class="footer__nav">
+                            <li class="footer__list"><a href="/giris-yap" class="footer__link">Giriş Yap</a></li>
+                            <li class="footer__list"><a href="/uye-ol" class="footer__link">Üye Ol</a></li>
+                            <li class="footer__list"><a href="/hesabim" class="footer__link">Hesabım</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Footer Top Section -->
+        <!-- Start Footer Bottom Section -->
+        <div class="footer__bottom">
+            <div class="row">
+                <div class="col-lg-8 col-md-6 col-12">
+                    <!-- Start Footer Copyright Text -->
+                    <div class="footer__copyright-text">
+                        <p>Copyright &copy; @DateTime.Now.Year SivKoop E-Ticaret Sitesi</p>
+                    </div> <!-- End Footer Copyright Text -->
+                </div>
+                <div class="col-lg-4 col-md-6 col-12">
+                    <!-- Start Footer Payment Logo -->
+                    <div class="footer__payment">
+                        <a href="#" class="footer__payment-link">
+                            <img src="/Content/Templates/GsoreTemplate/assets/img/company-logo/payment.png" alt="" class="footer__payment-img">
+                        </a>
+                    </div>  <!-- End Footer Payment Logo -->
+                </div>
+            </div>
+        </div> <!-- End Footer Bottom Section -->
+    </div>
+</footer> <!-- ::::::  End  Footer ::::::  -->
+
+
+
+

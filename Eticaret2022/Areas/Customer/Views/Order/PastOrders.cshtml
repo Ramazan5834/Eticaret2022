@@ -1,0 +1,125 @@
+﻿
+@{
+    ViewBag.Title = "Geçmiş Siparişler";
+}
+
+@model List<Eticaret2022.DataEntities.DataModels.SatisDetay>
+
+<!-- ::::::  Start  Main Container Section  ::::::  -->
+<main id="main-container" class="main-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- :::::::::: Start My Account Section :::::::::: -->
+                <div class="my-account-area">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-3">
+                            <div class="my-account-menu">
+                                <ul class="nav account-menu-list flex-column nav-pills" id="pills-tab" role="tablist">
+                                    <li>
+                                        <a id="pills-address-tab" class="active link--icon-left" href="/siparislerim"
+                                           aria-controls="pills-address" aria-selected="false">
+                                            <i class="far fa-shopping-basket"></i>Siparişlerim
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="pills-address-tab" class="link--icon-left" href="/adres-listesi"
+                                           aria-controls="pills-address" aria-selected="false">
+                                            <i class="fas fa-map-marked-alt"></i>Adreslerim
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="pills-account-tab" class="link--icon-left" href="/hesabim"
+                                           aria-controls="pills-account" aria-selected="false">
+                                            <i class="fas fa-user"></i>
+                                            Hesap Detaylarım
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="link--icon-left" href="/Account/LogOff"><i class="fas fa-sign-out-alt"></i>Çıkış Yap</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-md-9">
+                            <div class="tab-content my-account-tab" id="pills-tabContent">
+                                <div class="col-12">
+                                    @if (Model.Count != 0)
+                                    {
+                                        foreach (var satisDetay in Model)
+                                        {
+                                            <!-- Start Wishlist Table -->
+                                            <div class="table-content table-responsive cart-table-content">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="font-size: small">Sipariş Tarihi: @satisDetay.Tarih</th>
+                                                            <th style="font-size: small">Ödenen Tutar: @satisDetay.TotalFiyat</th>
+                                                            @{
+                                                                if (satisDetay.KargoNumarasi != 0)
+                                                                {
+                                                                    <th style="font-size: small" id="thCargo" title="Kargo Takibi İçin Tıklayınız">
+                                                                        <a href="http://suratkargo.com.tr/KargoTakip/?kargotakipno=@satisDetay.KargoNumarasi">
+                                                                            <i id="iconCargo" title="Kargo Takibi İçin Tıklayınız" class="far fa-truck-container"></i>
+                                                                        </a>
+                                                                    </th>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <th style="font-size: small" id="thCargo" title="Henüz Kargoya Verilmedi">
+                                                                        <a href="#">
+                                                                            <i id="iconCargo" title="Henüz Kargoya Verilmedi" class="far fa-truck-container"></i>
+                                                                        </a>
+                                                                    </th>
+                                                                }
+                                                            }
+                                                            <th style="font-size: small" id="thAddress" title="@satisDetay.Adres.Sehir @satisDetay.Adres.Ilce @satisDetay.Adres.AcikAdres">
+                                                                <u id="uAddress" title="@satisDetay.Adres.Sehir @satisDetay.Adres.Ilce @satisDetay.Adres.AcikAdres">Adres:@satisDetay.Adres.Baslik</u>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var satilanUrun in satisDetay.SatilanUrun.ToList())
+                                                        {
+                                                            <tr>
+                                                                <td class="product-thumbnail">
+                                                                    <img class="img-fluid" style="height: 100px" src="@satilanUrun.Urun.ResimPath" alt="">
+                                                                </td>
+                                                                <td class="product-name">Ürün Adı:@satilanUrun.Urun.Adi</td>
+                                                                <td class="product-price-cart">Adet Fiyatı:@satilanUrun.UrunAnlikFiyat</td>
+                                                                <td class="product-subtotal">Adet:@satilanUrun.Adet</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                                <hr />
+                                            </div> <!-- End Wishlist Table -->
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <h1>Herhangi Bir Siparişiniz Bulunamadı</h1>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- :::::::::: End My Account Section :::::::::: -->
+            </div>
+        </div>
+    </div>
+</main> <!-- ::::::  End  Main Container Section  ::::::  -->
+
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('[id="thAddress"]').tooltip();
+            $('[id="thCargo"]').tooltip();
+            $('[id="iconCargo"]').tooltip();
+            $('[id="uAddress"]').tooltip();
+        });
+    </script>
+}

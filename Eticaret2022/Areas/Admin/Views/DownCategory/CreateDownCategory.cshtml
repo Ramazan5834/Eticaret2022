@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "Alt Kategori Oluştur";
+}
+@model Eticaret2022.DataEntities.DataModels.AltKategori
+
+<div class="col-sm-10 container-fluid">
+    <!-- Basic Form Inputs card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Alt Kategori Ekle</h5>
+        </div>
+        <div class="card-block">
+            <form method="post" action="/Admin/DownCategory/CreateDownCategory" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Adı</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.Adi, new { @class = "form-control", placeholder = "Alt Kategorinin Adını Giriniz" })
+                        @Html.ValidationMessageFor(m => m.Adi, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Tanımı</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.Tanimi, new { @class = "form-control", placeholder = "Alt Kategorinin Tanımını Giriniz" })
+                        @Html.ValidationMessageFor(m => m.Tanimi, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Üst Kategorisi</label>
+                    <div class="col-sm-10">
+                        @Html.DropDownListFor(m => m.UstKategoriId, new SelectList(ViewBag.UstKategoriler, "Id", "Adi"),
+                            "Üst Kategori Seçin",
+                            new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.UstKategoriId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Alt Kategori Resmi</label>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div id="alanOnizleme" style="display: none !important;">
+                                <h5 class="text-center">Seçtiğiniz resim:</h5>
+                                <img id="resimOnizleme" class="w-100" style="height: 10rem !important;" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 ml-2">
+                            <label>Resim Seç:</label>
+                            <input type="file" class="form-control-file" name="imageUpload" id="imageUpload" />
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.AktifDurum, new { @Value = true })
+                <br />
+                <button type="submit" class="btn waves-effect waves-light btn-primary"><i class="icofont icofont-check-circled"></i>Kaydet</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#imageUpload").change(function (e) {
+                $("#alanOnizleme").show();
+                $("#resimOnizleme").attr("src", URL.createObjectURL(e.target.files[0]));
+            })
+        })
+    </script>
+    
+
+    <script src="/Content/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="/Content/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

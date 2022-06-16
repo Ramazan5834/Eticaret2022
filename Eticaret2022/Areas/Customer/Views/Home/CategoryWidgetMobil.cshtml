@@ -1,0 +1,18 @@
+﻿@model List<Eticaret2022.DataEntities.DataModels.UstKategori>
+<li>
+    <a href="#"><span>Kategoriler</span></a>
+    <ul class="sub-menu">
+        @foreach (var ustKategori in Model)
+        {
+<li>
+    <a href="#">@ustKategori.Adi</a>
+    <ul class="sub-menu">
+        @foreach (var altKategori in ustKategori.AltKategori.ToList())
+        {
+<li><a href="/kategori-detay?categoryId=@altKategori.Id">@altKategori.Adi</a></li>
+}
+    </ul>
+</li>
+}
+    </ul>
+</li>

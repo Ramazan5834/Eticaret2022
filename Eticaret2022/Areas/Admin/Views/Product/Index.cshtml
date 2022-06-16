@@ -1,0 +1,99 @@
+﻿
+@{ ViewBag.Title = "Ürünler"; }
+@model List<Eticaret2022.DataEntities.DataModels.Urun>
+@Html.Partial("PartialDeleteModal", "Ürün Sil")
+
+@if (Model.Count != 0)
+{
+<div class="card">
+    <div class="card-header">
+        <h5>Ürünler</h5>
+        <div class="card-header-right">
+            <a style="margin-top: -12px" class="btn btn-secondary" href="/Admin/Product/CreateProduct">
+                <i style="color: white" class="icofont icofont-ui-add"></i>Yeni Ürün
+            </a>
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Resim</th>
+                        <th>Ürün Adı</th>
+                        <th>Açıklaması</th>
+                        <th>Fiyat</th>
+                        <th>Stok</th>
+                        <th>Eklenme Tarihi</th>
+                        <th>Kategorisi</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var urun in Model)
+                    {
+                        string colorCode = null;
+                        if (urun.Stok == 0)
+                        {
+                            colorCode = "#ff5e5e8a";
+                        }
+                        else if (urun.Stok <= 3)
+                        {
+                            colorCode = "#ffd46b82";
+                        }
+    <tr style="background-color: @colorCode">
+        <td><img style="height: 70px" src="@urun.ResimPath" /></td>
+        <td>@urun.Adi</td>
+        <td>@urun.Aciklama</td>
+        <td>@urun.Fiyat TL</td>
+        <td>@urun.Stok</td>
+        <td>@urun.EklenmeTarihi.ToShortDateString()</td>
+        <td>@urun.AltKategori.Adi</td>
+        <td>
+            <a type="button" href="/Admin/Product/UpdateProduct?productId=@urun.Id" class="btn btn-sm btn-success"><i class="icofont icofont-edit-alt"></i>Düzenle</a>
+            <a class="btn btn-sm btn-danger openModal" data-modid="@urun.Id" data-modtitle="@urun.Adi" data-toggle="modal" href="#myModal"><i class="icofont icofont-ui-delete"></i>Sil</a>
+        </td>
+    </tr>
+}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> }
+else
+{
+<h1>Kayıtlı Ürün Yok</h1>
+                <a class="btn btn-secondary" href="/Admin/Product/CreateProduct"><i style="color: white" class="icofont icofont-ui-add"></i>Yeni Ürün</a>}
+
+
+
+@section Scripts
+{
+    <script>
+        $(".openModal").click(function () {
+            $(".modal-body>p.error").html("");
+            var title = $(this).data("modtitle");
+            $(".modal-body>p.message").html(title + " ürünü silinsinmi?");
+            $(".modal-body>p.error").html("Dikkat Yaptığınız İşlemin Geri Dönüşü Yok");
+            var id = $(this).data("modid");
+            $(".delModal").data("id", id);
+
+        });
+
+        $(".delModal").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Product/DeleteProduct/" + id,
+                success: function (durum) {
+                    if (durum) {
+                        window.location.replace("/Admin/Product/Index");
+                    } else {
+                        $(".modal-body>p.error").html("Bir hata oluştu");
+                    }
+                }
+            });
+        });
+
+    </script>
+}

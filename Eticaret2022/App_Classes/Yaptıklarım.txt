@@ -1,0 +1,18 @@
+﻿*kategori detaydan ürün detayına gidilmiyor(tl simgesine tıklayıncada gidilmesi lazım)
+*Ödeme butonu disable edilebildi
+*Fiyatın adetle çarpılıp satışdetaya eklenmesi yapıldı
+*Admin hesabıyla giriş yapıldığı zaman customer tarafından bişey alınamasın(sepet sayfasına gidemesin isAuthentication yerine Customer olsun)
+*Admin hesap detayları vs ve Admin olarak customer tarafındaki hesap detayına giremesin adres fln ekleyemesin
+*UserId için için en son düzenleme yapılacak
+ -Ürüne yorum yapabilmek için giriş yapma ve satın alma meselesi
+ -Geçmişl siparişler
+ -Payment Controller Index ve Siparişi verme
+*Mail içerikleri düzenlenecek(kargo numarası dinamik olmalı kendi kargo numaranı kaldır)
+*Kargoya ver Butonu ve Sipariş onayala butonuna tıklayınca disable edilmesi
+*Controller üzerinden gelen url ler var onları düzenle 
+*Error sayfaları içinde url ler yapıldı customer tarafında eksik urller oluşturuldu
+
+Samet
+*Sipariş verildiğinde stoktan düşme güncellemeleri yapılmadı
+*Sipariş verildikten sonra sepetin boşaltılıp ana ekrana dönmesi
+*Sipariş verildiğinde email gidecek

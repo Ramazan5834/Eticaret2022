@@ -1,0 +1,169 @@
+﻿@using Eticaret2022.App_Classes
+@using Microsoft.AspNet.Identity
+@model Eticaret2022.Areas.Admin.Models.SideNavInfoModel
+@{
+    string active = string.Empty;
+    if (TempData["Active"] != null)
+    {
+        active = TempData["Active"].ToString();
+    }
+}
+<nav class="pcoded-navbar">
+    <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
+    <div class="pcoded-inner-navbar main-menu">
+        <div class="">
+            <div class="main-menu-header">
+                <img class="img-80 img-radius" src="@ContextDB.Connect.SiteHakkindaDal.LogoPath()"
+                     alt="User-Profile-Image">
+                <div class="user-details">
+                    <span id="more-details">@ContextDB.Connect.AspNetUsersDal.GetActiveUserNameAndSurname(User.Identity.GetUserId())</span>
+                </div>
+            </div>
+        </div>
+        <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Kategori Menü</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="@(active == ActiveTempDataInfo.UpCategories ? "active" : "")">
+                <a href="/Admin/UpCategory/Index" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-view-list"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Üst Kategoriler</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="@(active == ActiveTempDataInfo.DownCategories ? "active" : "")">
+                <a href="/Admin/DownCategory/Index" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-view-list-alt"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Alt Kategoriler</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+        <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Ürün Menü</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="@(active == ActiveTempDataInfo.Products ? "active" : "")">
+                <a href="/Admin/Product/Index" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-package"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Ürünler</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+        <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Satış Menü</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="@(active == ActiveTempDataInfo.NewOrders ? "active" : "")">
+                <a href="/Admin/Order/NewOrders" class="waves-effect waves-dark">
+                    <span class="pcoded-micon">
+                        <i class="ti-timer"></i>
+                        <sub class="badge badge-info badge-pill position-absolute" style="bottom: 1rem !important; left: 0.8rem !important;">@Model.NewOrdersCount</sub>
+                    </span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Yeni Siparişler</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="@(active == ActiveTempDataInfo.ConfirmedOrders ? "active" : "")">
+                <a href="/Admin/Order/ConfirmedOrders" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-layers-alt"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Onaylanmış Siparişler</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="@(active == ActiveTempDataInfo.RejectedOrders ? "active" : "")">
+                <a href="/Admin/Order/RejectedOrders" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-bookmark-alt"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Reddedilmiş Siparişler</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+        <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">İletişim Menü</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="@(active == ActiveTempDataInfo.NewContacts ? "active" : "")">
+                <a href="/Admin/Contact/NewContacts" class="waves-effect waves-dark">
+                    <span class="pcoded-micon">
+                        <i class="ti-link"></i>
+                        <sub class="badge badge-info badge-pill position-absolute" style="bottom: 1rem !important; left: 0.8rem !important;">@Model.NewContactsCount</sub>
+                    </span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Yeni İletişim Kayıtları</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="@(active == ActiveTempDataInfo.PastContacts ? "active" : "")">
+                <a href="/Admin/Contact/PastContacts" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-unlink"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Geçmiş İletişim Kayıtları</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+        <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Yorum Menü</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="@(active == ActiveTempDataInfo.UnconfirmedComments ? "active" : "")">
+                <a href="/Admin/Comment/UnconfirmedComments" class="waves-effect waves-dark">
+                    <span class="pcoded-micon">
+                        <i class="ti-comment"></i>
+                        <sub class="badge badge-info badge-pill position-absolute" style="bottom: 1rem !important; left: 0.8rem !important;">@Model.UnconfirmedCommentsCount</sub>
+                    </span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Onaylanmayan Yorumlar</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="@(active == ActiveTempDataInfo.PastComments ? "active" : "")">
+                <a href="/Admin/Comment/PastComments" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-comment-alt"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Geçmiş Yorumlar</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+        <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Site Bilgileri</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="@(active == ActiveTempDataInfo.Bank ? "active" : "")">
+                <a href="/Admin/Bank/Index" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Banka Hesapları</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="@(active == ActiveTempDataInfo.SiteAbout ? "active" : "")">
+                <a href="/Admin/SiteAbout/Index" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-info"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Site Hakkında</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="@(active == ActiveTempDataInfo.Slider ? "active" : "")">
+                <a href="/Admin/Slider/Index" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-image"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Slider Resimleri</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+        <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Admin Sistem Menü</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="@(active == ActiveTempDataInfo.ListAdmins ? "active" : "")">
+                <a href="/Admin/AdminSystem/ListAdmins" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-user"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Sisteme Kayıtlı Adminler</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="@(active == ActiveTempDataInfo.AccountDetailAndEdit ? "active" : "")">
+                <a href="/Admin/AdminSystem/AccountDetail" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-pencil-alt"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Hesap Detayları/Düzenle</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+        <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Servis/Bakım Menüsü</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="@(active == ActiveTempDataInfo.SystemError ? "active" : "")">
+                <a href="/Admin/SystemError/Index" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-na"></i><b>D</b></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Sistem Hataları</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

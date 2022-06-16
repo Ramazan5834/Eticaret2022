@@ -1,0 +1,258 @@
+﻿@{
+    ViewBag.Title = "Ürün Ara";
+}
+@model List<Eticaret2022.DataEntities.DataModels.Urun>
+
+<main id="main-container" class="main-container">
+    <div class="container">
+        <div class="row">
+            <!-- Start Rightside - Content -->
+            <div class="col-12">
+                <!-- ::::::  Start Sort Box Section  ::::::  -->
+                <div class="sort-box m-tb-40">
+                    <!-- Start Sort Left Side -->
+                    <div class="sort-box-item">
+                        <h5 class="mt-1">@TempData["SearchString"] Aramasının Sonuçları</h5>
+                    </div> <!-- Start Sort Left Side -->
+                </div> <!-- ::::::  Start Sort Box Section  ::::::  -->
+
+                <div class="product-tab-area">
+                    <div class="tab-content tab-animate-zoom">
+                        <div class="tab-pane show active shop-grid" id="sort-grid">
+                            <div class="row">
+                                @if (Model.Count != 0)
+                                {
+                                    foreach (var urun in Model)
+                                    {
+                                        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12">
+                                            <!-- Start Single Default Product -->
+                                            <div class="product__box product__default--single text-center">
+                                                <!-- Start Product Image -->
+                                                <div class="product__img-box  pos-relative">
+                                                    <a href="/urundetay?productId=@urun.Id" class="product__img--link">
+                                                        <img class="product__img img-fluid" src="@urun.ResimPath" alt="">
+                                                    </a>
+                                                    @if (urun.Stok == 0)
+                                                    {<!-- Start Procuct Label -->
+                                                        <span class="product__label product__label--sale-out">Stokta Yok</span> <!-- End Procuct Label -->}
+                                                    <!-- Start Product Action Link-->
+                                                    <ul class="product__action--link pos-absolute">
+                                                        @if (urun.Stok > 0)
+                                                        {
+                                                            <li><a href="#modalAddCart" onclick="PopUpBasket(@urun.Id)" data-toggle="modal"><i class="icon-shopping-cart"></i></a></li>
+                                                        }
+                                                    </ul> <!-- End Product Action Link -->
+                                                </div> <!-- End Product Image -->
+                                                <!-- Start Product Content -->
+                                                <div class="product__content m-t-20">
+                                                    <a href="product-single-default.html" class="product__link">@urun.Adi</a>
+                                                    <div class="product__price m-t-5">
+                                                        <span class="product__price">@urun.Fiyat TL</span>
+                                                    </div>
+                                                </div> <!-- End Product Content -->
+                                            </div> <!-- End Single Default Product -->
+                                        </div>}
+                                }
+                                else
+                                {
+                                    <h1>Aramanızın Bi Sonucu Bulunamadı</h1>}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  <!-- Start Rightside - Content -->
+        </div>
+    </div>
+</main>
+
+
+<div class="modal fade" id="modalAddCart" tabindex="-1" role="dialog" aria-hidden="true">
+    <input type="hidden" value="" id="productid-popup" />
+    <input type="hidden" value="" id="selected-prodcut-price" />
+
+    <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col text-right">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"> <i class="fal fa-times"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="modal__product-img">
+                                        <img class="img-fluid" id="img-popup" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="link--green link--icon-left"><i class="fal fa-check-square"></i><span id="popup-name"></span></div>
+                                    <div class="product-var p-t-30">
+                                        <div class="product-quantity product-var__item d-flex align-items-center flex-wrap">
+                                            <span class="product-var__text">Adet: </span>
+                                            <form class="modal-quantity-scale m-l-20">
+                                                <div class="value-button" id="modal-decrease" onclick="decreaseValueModalDetail()">-</div>
+                                                <input type="number" id="modal-number" value="1" />
+                                                <div class="value-button" id="modal-increase" onclick="increaseValueModalDetail()">+</div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal__product-cart-buttons m-tb-15">
+                                        <a onclick="basketEkle()" class="btn btn--box  btn--tiny btn--green btn--green-hover-black btn--uppercase">Sepete Ekle</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 modal__border">
+                            <ul class="modal__product-shipping-info">
+                                <li class="link--icon-left"><i class="icon-shopping-cart"></i> İstediğiniz Ürün Adedini Seçiniz!!!</li>
+                                <li>Toplam Tutar: <span id="price-popup"></span> TL</li>
+                                <li><a href="#" class="btn text-underline color-green" data-dismiss="modal">Alışverişe Devam Et</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End Modal Add cart -->
+
+
+@section Scripts
+{
+    <script>
+        function ShowMessage(message, type) {
+            if (type == "s") {
+                swal({
+                    title: 'İşlem Başarılı',
+                    text: message,
+                    type: 'success',
+                    showCancelButtonClass: 'btn-success',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+            else {
+                swal({
+                    title: 'İşlem Başarısız',
+                    text: message,
+                    type: 'error',
+                    showCancelButtonClass: 'btn-danger',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+        }
+
+        function increaseValueModalDetail() {
+            var productId = $('#productid-popup').val();
+            $.ajax({
+                method: "POST",
+                url: "/Customer/Home/GetStokCount",
+                data: { Id: productId },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.durum == true) {
+                        var urunstokcount = data.urunStokCount;
+                        var modalStokCount = parseInt($('#modal-number').val());
+                        if (modalStokCount > urunstokcount) {
+                            $('#modalAddCart').modal('hide');
+                            ShowMessage("Stok Sayısını Aştınız Lütfen Tekrar Deneyiniz!", "e");
+                        }
+                        else {
+                        }
+                    }
+                }
+            });
+
+
+            var fiyat = $('#selected-prodcut-price').val();
+            var value = parseInt(document.getElementById('modal-number').value, 10);
+            value = isNaN(value) ? 0 : value;
+            value++;
+            document.getElementById('modal-number').value = value;
+            var toplamFiyat = value * parseInt(fiyat);
+            $('#price-popup').text(toplamFiyat);
+        }
+
+        function decreaseValueModalDetail() {
+            var fiyat = $('#selected-prodcut-price').val();
+            var value = parseInt(document.getElementById('modal-number').value, 10);
+            value = isNaN(value) ? 0 : value;
+            value < 1 ? value = 1 : '';
+            value--;
+            document.getElementById('modal-number').value = value;
+            var toplamFiyat = value * parseInt(fiyat);
+            $('#price-popup').text(toplamFiyat);
+        }
+
+        function PopUpBasket(id) {
+            var ProductId = id;
+            $('#modal-number').val("1");
+            $.ajax({
+                method: "POST",
+                url: "/Customer/Home/GetProduct",
+                data: { Id: ProductId },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.durum == true) {
+                        var dataImg = data.dataImg;
+                        var dataPrice = data.dataPrice;
+                        var dataId = data.dataId;
+                        var dataName = data.dataName;
+                        $("#img-popup").attr("src", dataImg);
+                        $('#price-popup').text(dataPrice);
+                        $('#selected-prodcut-price').val(dataPrice);
+                        $('#popup-name').text(dataName);
+                        $('#productid-popup').val(dataId);
+                    }
+                }
+            });
+        }
+
+        function basketEkle() {
+            var adet = $('#modal-number').val();
+            var Id = $('#productid-popup').val();
+
+            $.ajax({
+                method: "POST",
+                url: "/Customer/Home/GetStokCount",
+                data: { Id: Id },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.durum == true) {
+                        var urunstokcount = data.urunStokCount;
+                        var modalStokCount = parseInt($('#modal-number').val());
+                        if (modalStokCount > urunstokcount) {
+                            $('#modalAddCart').modal('hide');
+                            ShowMessage("Stok Sayısını Aştınız Lütfen Tekrar Deneyiniz!", "e");
+                        }
+                        else {
+                            $.ajax({
+                                method: "Post",
+                                url: "/Customer/Basket/AddProduct",
+                                data: { Id: Id, adet: adet },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.rtnValue == true) {
+                                        $('#modalAddCart').modal('hide');
+                                        ShowMessage("Ürün Başarıyla Sepete Eklenmiştir.", "s");
+                                        setTimeout(function () {
+                                            window.location.reload();
+                                        }, 2000);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+
+        }
+    </script>
+}
+

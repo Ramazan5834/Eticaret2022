@@ -1,0 +1,22 @@
+﻿@model List<Eticaret2022.DataEntities.DataModels.UstKategori>
+
+<li class="header__nav-item pos-relative">
+    <a href="#" class="header__nav-link">Kategoriler<i class="fal fa-chevron-down"></i></a>
+    <!--Single Dropdown Menu-->
+    <ul class="dropdown__menu pos-absolute">
+        @foreach (var ustKategori in Model)
+        {
+            <li class="dropdown__list">
+                <a href="#" class="dropdown__link d-flex justify-content-between align-items-center">@ustKategori.Adi<i class="far fa-chevron-right"></i></a>
+                <ul class="dropdown__submenu pos-absolute">
+                    @foreach (var altKategori in ustKategori.AltKategori.ToList())
+                    {
+                        <li class="dropdown__submenu-list"><a href="/kategori-detay?categoryId=@altKategori.Id" class="dropdown__submenu-link">@altKategori.Adi</a></li>
+                    }
+                </ul>
+            </li>
+        }
+
+    </ul>
+    <!--Single Dropdown Menu-->
+</li>

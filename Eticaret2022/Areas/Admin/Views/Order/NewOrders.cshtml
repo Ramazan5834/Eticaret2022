@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Yeni Siparişler";
+}
+@model List<Eticaret2022.DataEntities.DataModels.SatisDetay>
+
+@if (Model.Count != 0)
+{
+    <div class="card">
+        <div class="card-header" style="background-color: #93d2ff63">
+            <h5>Yeni Siparişler</h5>
+            <div class="card-header-right">
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sipariş Veren Kişi</th>
+                            <th>Ödeme Tipi</th>
+                            <th>Total Fiyat</th>
+                            <th>Tarih</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var satisDetay in Model)
+                        {
+                            <tr>
+                                <td>@satisDetay.AspNetUsers.Name @satisDetay.AspNetUsers.Surname</td>
+                                <td>@satisDetay.OdemeTip.Adi</td>
+                                <td>@satisDetay.TotalFiyat TL</td>
+                                <td>@satisDetay.Tarih</td>
+                                <td>
+                                    <a type="button" href="/Admin/Order/OrderDetail?orderId=@satisDetay.Id&pageState=1" class="btn btn-sm btn-primary"><i class="icofont icofont-info"></i>Detay Gör</a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> }
+else
+{
+    <h1>Yeni Sipariş Yok</h1>
+}
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 0px">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer" style="border-top: 0px">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    @if (TempData["EmailState"] != null)
+    {
+        bool emailState = (bool)TempData["EmailState"];
+        if (emailState)
+        {
+            <script>
+                $(window).on('load', function () {
+                    $(".modal-content").css("background-color", "lightgreen");
+                    $('#exampleModalLongTitle').text("İşlem Başarılı");
+                    $('.modal-body').text("Sipariş Onaylandı Ve Müşteriye Gerekli E-mail Gönderildi");
+                    $('#myModal').modal('show');
+                });
+            </script>
+        }
+        else
+        {
+            <script>
+                $(window).on('load', function () {
+                    $(".modal-content").css("background-color", "darksalmon");
+                    $('#exampleModalLongTitle').text("Bir Sıkıntı Oluştu");
+                    $('.modal-body').text("Sipariş Sistemde Onaylandı Ancak Müşteriye Gerekli E-mail Gönderilemedi!!!");
+                    $('#myModal').modal('show');
+                });
+            </script>
+        }
+    }
+}

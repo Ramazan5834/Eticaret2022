@@ -1,0 +1,313 @@
+﻿@using Microsoft.AspNet.Identity
+@model Eticaret2022.DataEntities.DataModels.Urun
+@{ ViewBag.Title = "Ürün Detay"; }
+
+<main id="main-container" class="main-container">
+
+    <!-- Start Product Details Gallery -->
+    <div class="product-details">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="product-gallery-box product-gallery-box--default m-b-60">
+                        <div class="product-image--large product-image--large-horizontal">
+                            <img class="img-fluid" id="img-zoom" src="@Model.ResimPath" data-zoom-image="@Model.ResimPath" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="product-details-box m-b-60">
+                        <input type="hidden" value="@Model.Id" id="urun-id" />
+
+                        <h4 class="font--regular m-b-20">@Model.Adi</h4>
+                        <div class="product__price m-t-5">
+                            <span class="product__price product__price--large">@Model.Fiyat TL</span>
+                        </div>
+
+                        <div class="product__desc m-t-25 m-b-30">
+                            <p>@Model.Aciklama</p>
+                        </div>
+                        <div class="product-var ">
+                            <div class="product__stock m-b-20">
+                                @if (Model.Stok > 0)
+                                {
+                    <span class="product__stock--in"><i class="fas fa-check-circle"></i>Stokta @Model.Stok Adet Ürün Var</span> }
+                else
+                {
+    <span class="product__stock--in"><i style="color: red" class="fas fa-exclamation-triangle"></i>Stokta Yok</span>}
+
+                            </div>
+                            <div class="product-quantity product-var__item">
+                                <ul class="product-modal-group">
+                                    @foreach (var item in ViewBag.odemeYontemleri)
+                                    {
+                                        <li><a class="link--gray link--icon-left"><i class="fal fa-money-check-edit"></i>@item.Adi</a></li>
+                               }
+                                </ul>
+                            </div>
+                            @if (Model.Stok > 0)
+                            {
+                <div class="product-quantity product-var__item d-flex align-items-center">
+                    <span class="product-var__text">Adet : </span>
+                    <form class="quantity-scale m-l-20">
+                        <div class="value-button" id="decrease" onclick="decreaseValueDetail()">-</div>
+                        <input type="number" id="number" value="1" />
+                        <div class="value-button" id="increase" onclick="increaseValueDetail()">+</div>
+                    </form>
+                </div>
+                                <div class="product-var__item">
+                                    <a onclick="basketEkle(@Model.Id)" class="btn btn--long btn--radius-tiny btn--green btn--green-hover-black btn--uppercase btn--weight m-r-20">Sepete Ekle <i class="icon-shopping-cart"></i></a>
+                                </div>}
+                            else
+                            {
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Product Details Gallery -->
+    <!-- Start Product Details Tab -->
+    <div class="product-details-tab-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="product-details-content">
+                        <ul class="tablist tablist--style-black tablist--style-title tablist--style-gap-30 nav">
+                            <li><a class="nav-link active" data-toggle="tab" href="#product-review">Yorumlar</a></li>
+                        </ul>
+                        <div class="product-details-tab-box">
+                            <div class="tab-content">
+                                <div id="product-review">
+                                    @if (Model.UrunYorum.Count > 0)
+                                    {
+                        <ul class="comment">
+                            @foreach (Eticaret2022.DataEntities.DataModels.UrunYorum item in Model.UrunYorum.Where(ss => ss.OnayDurum == true).ToList())
+                            {
+            <li class="comment__list">
+                <div class="comment__wrapper">
+                    @*<div class="comment__img">
+                            <img src="~/Content/App_Images/CustomerImages/user.jpg" alt="">
+                        </div>*@
+                    <div class="comment__content">
+                        <div class="comment__content-top">
+                            <div class="comment__content-left">
+                                <h6 class="comment__name">- @item.AspNetUsers.Name @item.AspNetUsers.Surname -</h6>
+                            </div>
+                            <div class="comment__content-right">
+                            </div>
+                        </div>
+
+                        <div class="para__content">
+                            <p class="para__text">@item.Icerik </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+                                <br />
+}
+
+                        </ul> }
+                    else
+                    {
+        <span>Bu ürüne henüz yorum yapılmamıştır.</span>}
+
+                                    <div class="review-form m-t-40">
+                                        <div class="section-content">
+                                            <h6 class="font--bold text-uppercase">ÜRÜN İÇİN YORUM YAPIN !</h6>
+                                            <p class="section-content__desc">Yorumlarınız bizim için değerlidir..</p>
+                                        </div>
+                                        <form class="form-box" id="commentForm" action="" method="post">
+                                            <input type="hidden" name="UserId" value="@User.Identity.GetUserId()" />
+                                            <input type="hidden" name="UrunId" value="@Model.Id" />
+                                            <input type="hidden" name="OnayDurum" value="0" />
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-box__single-group">
+                                                    </div>
+                                                </div>
+
+                                                @if (User.Identity.IsAuthenticated)
+                                                {
+
+                                                    if (Eticaret2022.BussinessLayer.Manager.ProductProcesses.IsCommentProduct(Model.Id.ToString(), User.Identity.GetUserId()))
+                                                    {
+                                    <div class="col-12">
+                                        <div class="form-box__single-group">
+                                            <label for="form-review">Yorumunuz*</label>
+                                            <textarea id="form-review" name="Icerik" rows="8" placeholder="Yorum Giriniz"></textarea>
+                                        </div>
+                                    </div>}
+                                                    else
+                                                    {
+
+                                                    }
+                                                }
+
+
+                                                <div class="col-12">
+
+                                                    @if (!User.Identity.IsAuthenticated)
+                                                    {
+                                        <a class="btn btn--box btn--small btn--black btn--black-hover-green btn--uppercase font--bold m-t-30" href="/giris-yap">Yorum yapabilmek lütfen giriş yapın !</a> }
+                                    else
+                                    {
+                                        if (Eticaret2022.BussinessLayer.Manager.ProductProcesses.IsCommentProduct(Model.Id.ToString(), User.Identity.GetUserId()))
+                                        {
+                        <button class="btn btn--box btn--small btn--black btn--black-hover-green btn--uppercase font--bold m-t-30" id="commentAdd">Yorum Yap</button> }
+                    else
+                    {
+    <a class="btn btn--box btn--small btn--black btn--black-hover-green btn--uppercase font--bold m-t-30">Ürüne yorum yapabilmek için ürünü satın almanız gerekir !</a>}
+
+}
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <br />
+                                    </div> <!-- End Add Review Form- -->
+                                </div>  <!-- Start Tab - Product Review -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  <!-- End Product Details Tab -->
+
+
+</main>
+@section Scripts
+{
+    <script>
+        $("#commentAdd").click(function () {
+            debugger;
+            var formData = $('#commentForm').serialize();
+            var commentUrl = "/Customer/Product/CommentAdd";
+            $.ajax({
+                type: "POST",
+                url: commentUrl,
+                data: formData,
+                dataType: 'json',
+                success: function (response) {
+                    debugger;
+                    if (response.IsSuccess == true) {
+                        ShowMessage(response.Message, "s");
+                    } else {
+                        ShowMessage(response.Message, "e");
+
+                    }
+                },
+                error: function () {
+                    ShowMessage(response.Message, "s");
+
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+        function ShowMessage(message, type) {
+            if (type == "s") {
+                swal({
+                    title: 'İşlem Başarılı',
+                    text: message,
+                    type: 'success',
+                    showCancelButtonClass: 'btn-success',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+            else {
+                swal({
+                    title: 'İşlem Başarısız',
+                    text: message,
+                    type: 'error',
+                    showCancelButtonClass: 'btn-danger',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+        }
+
+        function increaseValueDetail() {
+            var productId = $('#urun-id').val();
+            $.ajax({
+                method: "POST",
+                url: "/Customer/Home/GetStokCount",
+                data: { Id: productId },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.durum == true) {
+                        var urunstokcount = data.urunStokCount;
+                        var modalStokCount = parseInt($('#number').val());
+                        if (modalStokCount > urunstokcount) {
+                            ShowMessage("Stok Sayısını Aştınız Lütfen Tekrar Deneyiniz!", "e");
+                        }
+                        else {
+                        }
+                    }
+                }
+            });
+
+
+            var value = parseInt(document.getElementById('number').value, 10);
+            value = isNaN(value) ? 0 : value;
+            value++;
+            document.getElementById('number').value = value;
+        }
+
+        function decreaseValueDetail() {
+            var value = parseInt(document.getElementById('number').value, 10);
+            value = isNaN(value) ? 0 : value;
+            value < 1 ? value = 1 : '';
+            value--;
+            document.getElementById('number').value = value;
+        }
+
+
+
+
+        function basketEkle(id) {
+            debugger
+            var adet = $('#number').val();
+            var Id = id;
+            $.ajax({
+                method: "POST",
+                url: "/Customer/Home/GetStokCount",
+                data: { Id: Id },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.durum == true) {
+                        debugger;
+                        var urunstokcount = data.urunStokCount;
+                        var modalStokCount = parseInt($('#number').val());
+                        if (modalStokCount > urunstokcount) {
+                            ShowMessage("Stok Sayısını Aştınız Lütfen Tekrar Deneyiniz!", "e");
+                        }
+                        else {
+                            debugger;
+                            $.ajax({
+                                method: "Post",
+                                url: "/Customer/Basket/AddProduct",
+                                data: { Id: Id, adet: adet },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.rtnValue == true) {
+                                        ShowMessage("Ürün Başarıyla Sepete Eklenmiştir.", "s");
+                                        setTimeout(function () {
+                                            window.location.reload();
+                                        }, 2000);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+
+        }
+    </script>
+}

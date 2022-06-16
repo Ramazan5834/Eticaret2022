@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "AccountDetailAndEdit";
+}
+@model Eticaret2022.Models.ApplicationUser
+
+<div class="col-sm-10 container-fluid">
+    <!-- Basic Form Inputs card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Hesap Düzenle</h5>
+        </div>
+        <div class="card-block">
+            @if (TempData["message"] != null)
+            {
+                if ((string)TempData["message"] == "İşleminiz başarı ile gerçekleşti.")
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        @TempData["message"]
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        @TempData["message"]
+                    </div>
+                }
+            }
+            <form method="post" action="/Admin/AdminSystem/UpdateAccount">
+                @Html.AntiForgeryToken()
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.Email, new {@class = "form-control", placeholder = "Email Giriniz"})
+                        @Html.ValidationMessageFor(m => m.Email, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Telefon Numarası</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new {@class = "form-control", placeholder = "Telefon Numarası Giriniz"})
+                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">İsim</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.Name, new {@class = "form-control", placeholder = "İsim Giriniz"})
+                        @Html.ValidationMessageFor(m => m.Name, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Soyisim</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.Surname, new {@class = "form-control", placeholder = "Soyisim Giriniz"})
+                        @Html.ValidationMessageFor(m => m.Surname, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+                @Html.HiddenFor(I => I.Id)
+                @Html.HiddenFor(I => I.EmailConfirmed)
+                @Html.HiddenFor(I => I.PasswordHash)
+                @Html.HiddenFor(I => I.SecurityStamp)
+                @Html.HiddenFor(I => I.PhoneNumberConfirmed)
+                @Html.HiddenFor(I => I.TwoFactorEnabled)
+                @Html.HiddenFor(I => I.LockoutEndDateUtc)
+                @Html.HiddenFor(I => I.LockoutEnabled)
+                @Html.HiddenFor(I => I.AccessFailedCount)
+                @Html.HiddenFor(I => I.UserName)
+                <br/>
+                <button type="submit" class="btn waves-effect waves-light btn-primary"><i class="icofont icofont-check-circled"></i>Hesabı Güncelle</button>
+                <a href="/Admin/AdminSystem/ChangePassword" class="btn waves-effect waves-light btn-inverse ml-5"><i class="icofont icofont-exchange"></i> Şifre Değiştir</a>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="/Content/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="/Content/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "Alt Kategoriler";
+}
+@model List<Eticaret2022.DataEntities.DataModels.AltKategori>
+@Html.Partial("PartialDeleteModal", "Alt Kategori Sil")
+
+@if (Model.Count != 0)
+{
+<div class="card">
+    <div class="card-header">
+        <h5>Alt Kategoriler</h5>
+        <div class="card-header-right">
+            <a style="margin-top: -12px" class="btn btn-secondary" href="/Admin/DownCategory/CreateDownCategory">
+                <i style="color: white" class="icofont icofont-ui-add"></i>Yeni Alt Kategori
+            </a>
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Resim</th>
+                        <th>Alt Kategori Adı</th>
+                        <th>Tanımı</th>
+                        <th>Ürün Sayısı</th>
+                        <th>Üst Kategorisi</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var altKategori in Model)
+                    {
+    <tr>
+        <td><img style="height: 70px" src="@altKategori.ResimPath" /></td>
+        <td>@altKategori.Adi</td>
+        <td>@altKategori.Tanimi</td>
+        <td>@altKategori.Urun.Count</td>
+        <td>@altKategori.UstKategori.Adi</td>
+        <td>
+            <a type="button" href="/Admin/DownCategory/UpdateDownCategory?downCategoryId=@altKategori.Id" class="btn btn-sm btn-success"><i class="icofont icofont-edit-alt"></i>Düzenle</a>
+            <a class="btn btn-sm btn-danger openModal" data-modid="@altKategori.Id" data-modtitle="@altKategori.Adi" data-toggle="modal" href="#myModal"><i class="icofont icofont-ui-delete"></i>Sil</a>
+        </td>
+    </tr>}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+}
+else
+{
+    <h1>Kayıtlı Alt Kategori Yok</h1>
+    <a class="btn btn-secondary" href="/Admin/DownCategory/CreateDownCategory"><i style="color: white" class="icofont icofont-ui-add"></i>Yeni Alt Kategori</a>}
+
+
+@section Scripts
+{
+    <script>
+        $(".openModal").click(function() {
+            $(".modal-body>p.error").html("");
+            var title = $(this).data("modtitle");
+            $(".modal-body>p.message").html(title + " alt kategorisi silinsinmi?");
+            $(".modal-body>p.error").html("Dikkat Sildiğiniz Alt Kategoriye Ait Ürünlerde Silinecek!");
+            var id = $(this).data("modid");
+            $(".delModal").data("id", id);
+
+        });
+
+        $(".delModal").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                url: "/Admin/DownCategory/DeleteDownCategory/" + id,
+                success: function(durum) {
+                    if (durum) {
+                        window.location.replace("/Admin/DownCategory/Index");
+                    } else {
+                        $(".modal-body>p.error").html("Bir hata oluştu");
+                    }
+                }
+            });
+        });
+
+    </script>
+}

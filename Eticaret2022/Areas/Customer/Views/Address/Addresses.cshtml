@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "Adresler";
+}
+@model List<Eticaret2022.DataEntities.DataModels.Adres>
+@Html.Partial("PartialDeleteModal", "Adres Sil")
+
+<!-- ::::::  Start  Main Container Section  ::::::  -->
+<main id="main-container" class="main-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- :::::::::: Start My Account Section :::::::::: -->
+                <div class="my-account-area">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-3">
+                            <div class="my-account-menu">
+                                <ul class="nav account-menu-list flex-column nav-pills" id="pills-tab" role="tablist">
+                                    <li>
+                                        <a id="pills-address-tab" class="link--icon-left" href="/siparislerim"
+                                           aria-controls="pills-address" aria-selected="false">
+                                            <i class="far fa-shopping-basket"></i>Siparişlerim
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="pills-address-tab" class="active link--icon-left" href="/adres-listesi"
+                                           aria-controls="pills-address" aria-selected="false">
+                                            <i class="fas fa-map-marked-alt"></i>Adreslerim
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a id="pills-account-tab" class="link--icon-left" href="/hesabim"
+                                           aria-controls="pills-account" aria-selected="false">
+                                            <i class="fas fa-user"></i>
+                                            Hesap Detaylarım
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="link--icon-left" href="/Account/LogOff"><i class="fas fa-sign-out-alt"></i>Çıkış Yap</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-md-9">
+                            <div class="tab-content my-account-tab" id="pills-tabContent">
+                                @if (Model.Count != 0)
+                                {
+                                    foreach (var adres in Model)
+                                    {
+                                        <div aria-labelledby="pills-address-tab">
+                                            <div class="my-account-address account-wrapper">
+                                                <h4 class="account-title">@adres.Baslik</h4>
+                                                <div class="account-address m-t-30">
+                                                   <h6 class="name">@adres.Sehir @adres.Ilce</h6>
+                                                    <p>@adres.AcikAdres</p>
+                                                    <p>Posta Kodu:@adres.PostaKodu</p>
+                                                    <a class="box-btn m-t-25 " href="/adres-duzenle?addressId=@adres.Id"><i class="far fa-edit"></i> Adresi Düzenle</a>&nbsp;&nbsp;
+                                                    <a class="btn-btn m-t-25 openModal" data-modid="@adres.Id" data-modtitle="@adres.Baslik" data-toggle="modal" href="#myModal"><i class="far fa-trash-alt"></i> Sil</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="container">
+                                        <h4>Herhangi bir kayıtlı Adresiniz Bulunamadı!!!</h4>
+                                    </div>
+                                }
+
+                                <div class="form-box__single-group">
+                                    <a href="/adres-ekle" class="btn btn--box btn--radius btn--small btn--black btn--black-hover-green btn--uppercase font--bold">Yeni Adres Ekle</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- :::::::::: End My Account Section :::::::::: -->
+            </div>
+        </div>
+    </div>
+</main> <!-- ::::::  End  Main Container Section  ::::::  -->
+
+
+@section Scripts
+{
+    <script>
+        $(".openModal").click(function () {
+            $(".modal-body>p.error").html("")
+            var title = $(this).data("modtitle");
+            $(".modal-body>p.message").html(title + " adres silinsinmi");
+            $(".modal-body>p.error").html("Dikkat Yaptığınız İşlemin Geri Dönüşü Yok");
+            var id = $(this).data("modid");
+            $(".delModal").data("id", id);
+        });
+
+        $(".delModal").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                url: "/Customer/Address/DeleteAddress/" + id,
+                success: function (durum) {
+                    if (durum) {
+                        window.location.replace("/adres-listesi");
+                    } else {
+                        $(".modal-body>p.error").html("Bir hata oluştu");
+                    }
+                }
+            });
+        });
+
+    </script>
+}
